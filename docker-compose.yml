@@ -1,4 +1,9 @@
 services:
+  n8n:
+    image: n8nio/n8n
+    env_file:
+      - .env.local
+
   campaign-brief-studio:
     build:
       context: .
