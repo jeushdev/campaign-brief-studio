@@ -1,0 +1,17 @@
+services:
+  campaign-brief-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.local
+    environment:
+      CAMPAIGN_DB_PATH: /app/data/campaign-brief-studio.sqlite
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - campaign-brief-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  campaign-brief-data:

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function BriefDetail({ params }: { params: Promise<{ id: string }> }) {
   const brief = getBrief((await params).id); if (!brief) notFound();
   const lastAttempt = brief.attempts.at(-1);
-  const expired = brief.status === "Generating" && lastAttempt && Date.parse(lastAttempt.expiresAt) <= Date.now();
+  const expired = brief.generationExpired;
   return <AppShell>
     <header className="page-header compact"><div><p className="eyebrow">Campaign draft</p><h1>{brief.brief.businessName}</h1><p>{brief.brief.objective} · {brief.brief.industry}</p></div><Status value={brief.status} /></header>
     <div className="notice">Generated material requires human review before external use. Brief-derived hypotheses are not verified research.</div>

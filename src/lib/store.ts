@@ -10,5 +10,8 @@ export const submitRevision = (...args: Parameters<ReturnType<typeof openStore>[
 export const completeAttempt = (...args: Parameters<ReturnType<typeof openStore>["completeAttempt"]>) => db().completeAttempt(...args);
 export const failAttempt = (...args: Parameters<ReturnType<typeof openStore>["failAttempt"]>) => db().failAttempt(...args);
 export const reviewBrief = (...args: Parameters<ReturnType<typeof openStore>["reviewBrief"]>) => db().reviewBrief(...args);
-export const getBrief = (id: string) => db().getBrief(id);
+export const getBrief = (id: string) => {
+  const brief = db().getBrief(id), attempt = brief?.attempts.at(-1);
+  return brief ? { ...brief, generationExpired: brief.status === "Generating" && !!attempt && Date.parse(attempt.expiresAt) <= Date.now() } : undefined;
+};
 export const listBriefs = () => db().listBriefs();
