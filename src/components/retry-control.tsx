@@ -1,4 +1,7 @@
 "use client";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-export function RetryControl({ id, label = "Retry generation" }: { id: string; label?: string }) { const router = useRouter(); const [busy, setBusy] = useState(false); const [error, setError] = useState(""); async function retry() { setBusy(true); setError(""); try { const response = await fetch(`/api/briefs/${id}/retry`, { method: "POST" }); const result = await response.json(); if (!response.ok) { setError(result.error ?? "Unable to start generation."); return; } router.refresh(); } catch { setError("Network error. Try again."); } finally { setBusy(false); } } return <div><button className="secondary" disabled={busy} onClick={retry}>{busy ? "Generating…" : label}</button>{error && <p className="error">{error}</p>}</div>; }
+import { useMutation } from "./use-mutation";
+export function RetryControl({ id, version }: { id: string; version: number }) {
+  const router = useRouter(), mutation = useMutation(`/api/briefs/${id}/retry`);
+  return <div><button disabled={mutation.busy} onClick={async () => { const result = await mutation.submit({ version }); if (result) router.refresh(); }}>{mutation.busy ? "Generating…" : mutation.uncertain ? "Retry same request" : "Retry generation"}</button>{mutation.error && <p className="error" role="alert">{mutation.error}</p>}</div>;
+}

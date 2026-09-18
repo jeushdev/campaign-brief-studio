@@ -1,17 +1,6 @@
 import { NextResponse } from "next/server";
-import { createDemoPlan } from "@/lib/demo-plan";
-import { beginGeneration, failBrief, getBrief, saveGeneratedPlan } from "@/lib/store";
-import { requestCampaignPlan } from "@/lib/webhook";
-
+import { retryFailed } from "@/lib/store";
+import { errorResponse, operationKey, readJson, requireLocalMutation } from "@/lib/http";
+import { runGeneration } from "@/lib/generation";
 export const runtime = "nodejs";
-export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-  const current = await getBrief(id);
-  if (!current) return NextResponse.json({ error: "Brief not found." }, { status: 404 });
-  if (!["Failed", "Revision requested"].includes(current.status)) return NextResponse.json({ error: "Only failed or revision-requested briefs can be generated." }, { status: 409 });
-  try { await beginGeneration(id, current.status === "Failed" ? "Retry started" : "Revision resubmitted"); } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to start generation." }, { status: 409 }); }
-  if (!process.env.N8N_WEBHOOK_URL) { const saved = await saveGeneratedPlan(id, createDemoPlan(current.brief), "Demo"); return NextResponse.json({ id: saved?.id, mode: "demo" }); }
-  const result = await requestCampaignPlan(id, current.brief);
-  if (!result.ok || !result.plan) { await failBrief(id, result.error ?? "No valid plan returned."); return NextResponse.json({ id, error: result.error }, { status: 502 }); }
-  const saved = await saveGeneratedPlan(id, result.plan, "Webhook"); return NextResponse.json({ id: saved?.id, mode: "webhook" });
-}
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) { const guarded = requireLocalMutation(request); if (guarded) return guarded; const parsed = await readJson(request); if ("response" in parsed) return parsed.response; const body = parsed.body; if (!body || typeof body !== "object" || Array.isArray(body) || Object.keys(body).some((key) => key !== "version") || !Number.isInteger((body as { version?: unknown }).version)) return NextResponse.json({ error: "A current integer version is required." }, { status: 422 }); try { const started = retryFailed((await params).id, (body as { version: number }).version, operationKey(request)); if (started.replayed) return NextResponse.json({ id: started.briefId, replayed: true }); const outcome = await runGeneration(started.briefId, started.attemptId); return outcome.error ? NextResponse.json({ id: started.briefId, error: outcome.error }, { status: 502 }) : NextResponse.json({ id: started.briefId, mode: outcome.mode }); } catch (error) { return errorResponse(error); } }

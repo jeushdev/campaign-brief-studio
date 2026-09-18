@@ -1,5 +1,31 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-const fields = [{ name: "businessName", label: "Business name", hint: "The organization behind the campaign." }, { name: "industry", label: "Industry", hint: "e.g., B2B SaaS, hospitality, health services." }, { name: "targetAudience", label: "Target audience", hint: "Describe the buyer or user segment precisely." }, { name: "offer", label: "Offer", hint: "What are you inviting the audience to consider or do?" }, { name: "objective", label: "Campaign objective", hint: "e.g., generate qualified demo requests." }, { name: "brandVoice", label: "Brand voice", hint: "e.g., clear, grounded, expert but approachable." }];
-export function BriefForm() { const router = useRouter(); const [errors, setErrors] = useState<Record<string, string>>({}); const [state, setState] = useState<"idle" | "sending" | "error">("idle"); async function submit(form: HTMLFormElement) { setState("sending"); setErrors({}); try { const data = Object.fromEntries(new FormData(form)); const response = await fetch("/api/briefs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); const result = await response.json(); if (!response.ok) { setErrors(result.errors ?? { form: result.error ?? "Unable to generate this brief." }); setState("error"); return; } router.push(`/briefs/${result.id}`); } catch { setErrors({ form: "Network error. Check the server and try again." }); setState("error"); } } return <form className="form" onSubmit={(e) => { e.preventDefault(); submit(e.currentTarget); }} noValidate>{fields.map((field) => <label key={field.name}>{field.label}<span>{field.hint}</span><input name={field.name} aria-invalid={!!errors[field.name]} />{errors[field.name] && <em>{errors[field.name]}</em>}</label>)}<label>Preferred channels<span>Separate channels with commas; use only channels you can operate.</span><input name="channels" placeholder="LinkedIn, Email" aria-invalid={!!errors.channels} />{errors.channels && <em>{errors.channels}</em>}</label><label>Constraints and compliance notes<span>Required. Include restrictions, approvals, claims policy, or “None known.”</span><textarea name="constraints" rows={4} aria-invalid={!!errors.constraints} />{errors.constraints && <em>{errors.constraints}</em>}</label><label>Source or context material <span>Optional. Do not paste confidential client data in demo mode.</span><textarea name="sourceMaterial" rows={4} /></label>{errors.form && <p className="error">{errors.form}</p>}<div className="form-footer"><p>Generated content is a draft and requires human review before external use.</p><button disabled={state === "sending"}>{state === "sending" ? "Generating draft…" : "Create campaign draft"}</button></div></form>; }
+import type { CampaignBrief } from "@/lib/types";
+import { useMutation } from "./use-mutation";
+const fields = [{ name: "businessName", label: "Business name" }, { name: "industry", label: "Industry" }, { name: "targetAudience", label: "Target audience" }, { name: "offer", label: "Offer" }, { name: "objective", label: "Campaign objective" }, { name: "brandVoice", label: "Brand voice" }] as const;
+export function BriefForm({ revision }: { revision?: { id: string; version: number; brief: CampaignBrief; instructions: string } }) {
+  const router = useRouter(), mutation = useMutation(revision ? `/api/briefs/${revision.id}/revision` : "/api/briefs");
+  const [errors, setErrors] = useState<Record<string, string>>({}), [savedId, setSavedId] = useState("");
+  async function submit(form: HTMLFormElement) {
+    setErrors({});
+    const data = Object.fromEntries(new FormData(form));
+    const { instructions, ...brief } = data;
+    const result = await mutation.submit(revision ? { version: revision.version, brief, instructions } : brief);
+    if (!result) return;
+    if (result.id) setSavedId(result.id);
+    if (!result.ok) { setErrors(result.errors ?? {}); if (revision) router.refresh(); return; }
+    if (result.id) { router.push(`/briefs/${result.id}`); router.refresh(); }
+  }
+  const locked = mutation.busy || mutation.uncertain || !!savedId;
+  return <form className="form" onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget); }} noValidate>
+    {fields.map((field) => <label key={field.name}>{field.label}<input name={field.name} defaultValue={revision?.brief[field.name]} readOnly={locked} aria-invalid={!!errors[field.name]} />{errors[field.name] && <em>{errors[field.name]}</em>}</label>)}
+    <label>Preferred channels<span>Separate channels with commas.</span><input name="channels" defaultValue={revision?.brief.channels.join(", ")} readOnly={locked} placeholder="LinkedIn, Email" />{errors.channels && <em>{errors.channels}</em>}</label>
+    <label>Constraints and compliance notes<span>Include restrictions or “None known.”</span><textarea name="constraints" defaultValue={revision?.brief.constraints} readOnly={locked} rows={3} />{errors.constraints && <em>{errors.constraints}</em>}</label>
+    <label>Source or context material<span>Optional; include only material suitable for the configured provider.</span><textarea name="sourceMaterial" defaultValue={revision?.brief.sourceMaterial} readOnly={locked} rows={3} />{errors.sourceMaterial && <em>{errors.sourceMaterial}</em>}</label>
+    {revision && <label className="full-width">Revision instructions<textarea name="instructions" defaultValue={revision.instructions} readOnly={locked} rows={3} required /></label>}
+    {(errors.form || mutation.error) && <p role="alert" className="error full-width">{errors.form || mutation.error}</p>}
+    <div className="form-footer"><p>Every generated plan requires human review.</p>{savedId ? <Link href={`/briefs/${savedId}`}>Open saved brief to review or retry</Link> : <button disabled={mutation.busy}>{mutation.busy ? "Generating…" : mutation.uncertain ? "Retry same submission" : revision ? "Submit revised brief" : "Create campaign draft"}</button>}</div>
+  </form>;
+}

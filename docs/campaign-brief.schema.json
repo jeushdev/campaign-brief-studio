@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Campaign brief v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "businessName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "industry": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "targetAudience": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "offer": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "brandVoice": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "constraints": {
+      "type": "string",
+      "minLength": 8,
+      "pattern": "\\S"
+    },
+    "sourceMaterial": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "businessName",
+    "industry",
+    "targetAudience",
+    "offer",
+    "objective",
+    "brandVoice",
+    "channels",
+    "constraints"
+  ]
+}

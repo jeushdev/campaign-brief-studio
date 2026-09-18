@@ -1,4 +1,22 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-export function ReviewControls({ id }: { id: string }) { const router = useRouter(); const [note, setNote] = useState(""); const [busy, setBusy] = useState(false); const [error, setError] = useState(""); async function decide(decision: "Approved" | "Rejected" | "Revision requested") { setBusy(true); setError(""); try { const response = await fetch(`/api/briefs/${id}/review`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decision, note }) }); const result = await response.json(); if (!response.ok) { setError(result.error ?? "Review action failed."); return; } router.refresh(); } catch { setError("Network error. Try again."); } finally { setBusy(false); } } return <section className="review-box"><h2>Human decision</h2><p>This plan remains a draft until a reviewer explicitly approves it.</p><label>Reviewer notes<textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Required context for rejection, revision, or approval rationale." /></label>{error && <p className="error">{error}</p>}<div><button disabled={busy} onClick={() => decide("Approved")}>Approve draft</button><button className="secondary" disabled={busy} onClick={() => decide("Revision requested")}>Request revision</button><button className="secondary" disabled={busy} onClick={() => decide("Rejected")}>Reject</button></div></section>; }
+import { useMutation } from "./use-mutation";
+export function ReviewControls({ id, version, lowConfidence }: { id: string; version: number; lowConfidence: boolean }) {
+  const router = useRouter(), mutation = useMutation(`/api/briefs/${id}/review`);
+  const [note, setNote] = useState(""), [acknowledgeLowConfidence, setAcknowledged] = useState(false);
+  async function decide(decision: "Approved" | "Rejected" | "Revision requested") {
+    const result = await mutation.submit({ version, decision, note, acknowledgeLowConfidence });
+    if (result) router.refresh();
+  }
+  return <section className="review-box"><h2>Human decision</h2><p>Local operator review. No authenticated reviewer identity is recorded.</p>
+    <label>Reviewer notes<textarea value={note} readOnly={mutation.busy || mutation.uncertain} onChange={(event) => setNote(event.target.value)} rows={3} /></label>
+    {lowConfidence && <label className="acknowledgment"><input type="checkbox" checked={acknowledgeLowConfidence} disabled={mutation.busy || mutation.uncertain} onChange={(event) => setAcknowledged(event.target.checked)} />I acknowledge the low confidence and have explained my approval in the notes.</label>}
+    {mutation.error && <p role="alert" className="error">{mutation.error}</p>}
+    <div className="actions">{mutation.uncertain ? <button disabled={mutation.busy} onClick={() => void decide("Approved")}>Retry same decision</button> : <>
+      <button disabled={mutation.busy} onClick={() => void decide("Approved")}>Approve draft</button>
+      <button className="secondary" disabled={mutation.busy} onClick={() => void decide("Revision requested")}>Request revision</button>
+      <button className="secondary" disabled={mutation.busy} onClick={() => void decide("Rejected")}>Reject</button>
+    </>}</div>
+  </section>;
+}

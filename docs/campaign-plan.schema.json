@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Campaign plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "briefSummary": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "audienceInsights": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "messagingAngles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "sample": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "title",
+          "rationale",
+          "sample"
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "landingPageOutline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "section": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "section",
+          "purpose"
+        ]
+      },
+      "minItems": 1
+    },
+    "sevenDayContentPlan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "day": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "channel": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "format": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "CTA": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "day",
+          "channel",
+          "format",
+          "topic",
+          "CTA"
+        ]
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "reviewQuestions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    }
+  },
+  "required": [
+    "briefSummary",
+    "audienceInsights",
+    "messagingAngles",
+    "landingPageOutline",
+    "sevenDayContentPlan",
+    "assumptions",
+    "risks",
+    "reviewQuestions",
+    "confidence"
+  ]
+}
