@@ -1,7 +1,22 @@
-import type { CampaignBrief, CampaignPlan } from "./types";
-export const requiredFields: (keyof CampaignBrief)[] = ["businessName", "industry", "targetAudience", "offer", "objective", "brandVoice", "channels", "constraints"];
-export function normalizeBrief(input: Record<string, unknown>): CampaignBrief { const rawChannels = input.channels; const channels = typeof rawChannels === "string" ? rawChannels.split(",") : Array.isArray(rawChannels) ? rawChannels : []; return { businessName: typeof input.businessName === "string" ? input.businessName.trim() : "", industry: typeof input.industry === "string" ? input.industry.trim() : "", targetAudience: typeof input.targetAudience === "string" ? input.targetAudience.trim() : "", offer: typeof input.offer === "string" ? input.offer.trim() : "", objective: typeof input.objective === "string" ? input.objective.trim() : "", brandVoice: typeof input.brandVoice === "string" ? input.brandVoice.trim() : "", channels: channels.filter((v): v is string => typeof v === "string").map((v) => v.trim()).filter(Boolean), constraints: typeof input.constraints === "string" ? input.constraints.trim() : "", sourceMaterial: typeof input.sourceMaterial === "string" ? input.sourceMaterial.trim() || undefined : undefined }; }
-export function validateBrief(input: unknown) { const source = input && typeof input === "object" && !Array.isArray(input) ? input as Record<string, unknown> : {}; const brief = normalizeBrief(source); const errors: Record<string, string> = {}; for (const field of requiredFields) { const raw = source[field]; if (field === "channels" ? !(typeof raw === "string" || Array.isArray(raw)) || brief.channels.length === 0 || (Array.isArray(raw) && raw.some((v) => typeof v !== "string")) : typeof raw !== "string" || !brief[field]) errors[field] = "This field is required and must be valid."; } if (brief.constraints.length < 8) errors.constraints = "Add compliance, brand, or operational constraints (use ‘None known’ if none apply)."; return { valid: Object.keys(errors).length === 0, errors, brief }; }
-const nonblankStrings = (value: unknown, min = 1) => Array.isArray(value) && value.length >= min && value.every((item) => typeof item === "string" && item.trim().length > 0);
-const objectFields = (value: unknown, fields: string[], count?: number) => Array.isArray(value) && (!count || value.length === count) && value.every((item) => item && typeof item === "object" && fields.every((key) => typeof (item as Record<string, unknown>)[key] === "string" && ((item as Record<string, unknown>)[key] as string).trim().length > 0));
-export function validatePlan(value: unknown): { valid: boolean; errors: string[]; plan?: CampaignPlan } { const p = value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null; const errors: string[] = []; if (!p) return { valid: false, errors: ["Response is not an object."] }; if (typeof p.briefSummary !== "string" || !p.briefSummary.trim()) errors.push("Missing briefSummary"); if (!nonblankStrings(p.audienceInsights)) errors.push("Missing audienceInsights"); if (!objectFields(p.messagingAngles, ["title", "rationale", "sample"], 3)) errors.push("messagingAngles must contain exactly three complete items"); if (!objectFields(p.landingPageOutline, ["section", "purpose"])) errors.push("Invalid landingPageOutline"); if (!objectFields(p.sevenDayContentPlan, ["day", "channel", "format", "topic", "CTA"], 7)) errors.push("sevenDayContentPlan must contain seven complete items"); if (!nonblankStrings(p.assumptions) || !nonblankStrings(p.risks) || !nonblankStrings(p.reviewQuestions)) errors.push("Missing assumptions, risks, or reviewQuestions"); if (!["high", "medium", "low"].includes(String(p.confidence))) errors.push("Invalid confidence"); return errors.length ? { valid: false, errors } : { valid: true, errors: [], plan: p as unknown as CampaignPlan }; }
+import { CAMPAIGN_BRIEF_JSON_SCHEMA, CAMPAIGN_PLAN_JSON_SCHEMA, validateSchema } from "./schema.ts";
+import type { CampaignBrief, CampaignPlan } from "./types.ts";
+export function validateBrief(input: unknown): { valid: boolean; errors: Record<string, string>; brief: CampaignBrief } {
+  const errors: Record<string, string> = {};
+  let value = input;
+  if (input && typeof input === "object" && !Array.isArray(input)) {
+    const source = input as Record<string, unknown>;
+    value = Object.fromEntries(Object.entries(source).map(([key, item]) => [key, typeof item === "string" ? item.trim() : item]));
+    const normalized = value as Record<string, unknown>;
+    if (typeof source.channels === "string") normalized.channels = source.channels.split(",").map((channel) => channel.trim());
+    else if (Array.isArray(source.channels)) normalized.channels = source.channels.map((channel) => typeof channel === "string" ? channel.trim() : channel);
+  }
+  for (const error of validateSchema(value, CAMPAIGN_BRIEF_JSON_SCHEMA, "brief")) {
+    const field = error.match(/^brief\.([A-Za-z]+)/)?.[1] ?? "form";
+    errors[field] = error;
+  }
+  return { valid: !Object.keys(errors).length, errors, brief: value as CampaignBrief };
+}
+export function validatePlan(value: unknown): { valid: boolean; errors: string[]; plan?: CampaignPlan } {
+  const errors = validateSchema(value, CAMPAIGN_PLAN_JSON_SCHEMA, "plan");
+  return errors.length ? { valid: false, errors } : { valid: true, errors: [], plan: value as CampaignPlan };
+}

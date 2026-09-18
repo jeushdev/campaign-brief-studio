@@ -1,20 +1,14 @@
 import "server-only";
-import fs from "node:fs/promises";
 import path from "node:path";
-import { randomUUID } from "node:crypto";
-import type { Activity, BriefStatus, CampaignBrief, CampaignPlan, StoredBrief } from "./types";
-const file = path.join(process.cwd(), "data", "briefs.json");
-let queue = Promise.resolve();
-const withLock = async <T>(fn: () => Promise<T>) => { const previous = queue; let release!: () => void; queue = new Promise<void>((resolve) => { release = resolve; }); await previous; try { return await fn(); } finally { release(); } };
-async function read(): Promise<StoredBrief[]> { try { const value = JSON.parse(await fs.readFile(file, "utf8")); if (!Array.isArray(value)) throw new Error("Stored database is not an array."); return value as StoredBrief[]; } catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return []; throw new Error(`Unable to read local database: ${error instanceof Error ? error.message : "unknown error"}`); } }
-async function write(data: StoredBrief[]) { await fs.mkdir(path.dirname(file), { recursive: true }); const temp = `${file}.${process.pid}.${randomUUID()}.tmp`; await fs.writeFile(temp, JSON.stringify(data, null, 2), { encoding: "utf8", flag: "wx" }); await fs.rename(temp, file); }
-const event = (action: string, detail: string, reviewer?: string): Activity => ({ id: randomUUID(), at: new Date().toISOString(), action, detail, ...(reviewer ? { reviewer } : {}) });
-export async function listBriefs() { return (await read()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)); }
-export async function getBrief(id: string) { return (await read()).find((brief) => brief.id === id); }
-export async function createBrief(brief: CampaignBrief) { return withLock(async () => { const now = new Date().toISOString(); const record: StoredBrief = { id: randomUUID(), createdAt: now, updatedAt: now, status: "Draft", brief, activities: [event("Draft created", "Input normalized and stored locally.")] }; const all = await read(); all.push(record); await write(all); return record; }); }
-const allowed: Record<BriefStatus, BriefStatus[]> = { Draft: ["Submitted"], Submitted: ["Generating"], Generating: ["Needs review", "Failed"], "Needs review": ["Approved", "Rejected", "Revision requested"], "Revision requested": ["Submitted"], Failed: ["Generating"], Approved: [], Rejected: [] };
-export async function updateBrief(id: string, patch: Partial<Pick<StoredBrief, "status" | "plan" | "reviewNote">>, action: string, detail: string, reviewer?: string) { return withLock(async () => { const all = await read(); const index = all.findIndex((brief) => brief.id === id); if (index < 0) return undefined; const current = all[index]; if (patch.status && patch.status !== current.status && !allowed[current.status].includes(patch.status)) throw new Error(`Invalid transition: ${current.status} to ${patch.status}`); const next = { ...current, ...patch, updatedAt: new Date().toISOString(), activities: [...current.activities, event(action, detail, reviewer)] }; all[index] = next; await write(all); return next; }); }
-export async function saveGeneratedPlan(id: string, plan: CampaignPlan, mode: "Webhook" | "Demo") { return updateBrief(id, { status: "Needs review", plan }, "Generation validated", `${mode} output passed the required campaign-plan schema and is awaiting human review.`); }
-export async function failBrief(id: string, detail: string) { return updateBrief(id, { status: "Failed" }, "Generation failed", detail); }
-export async function setStatus(id: string, status: Extract<BriefStatus, "Approved" | "Rejected" | "Revision requested">, note: string, reviewer?: string) { const current = await getBrief(id); if (!current) return undefined; if (status === "Approved" && (!current.plan || current.status !== "Needs review")) throw new Error("Only a current validated plan can be approved."); if ((status === "Rejected" || status === "Revision requested") && !note.trim()) throw new Error("A review note is required."); return updateBrief(id, { status, reviewNote: note.trim() || undefined }, `Review: ${status}`, note.trim(), reviewer); }
-export async function beginGeneration(id: string, action: string) { return updateBrief(id, { status: "Generating" }, action, "Generation attempt started."); }
+import { openStore } from "./sqlite-store.ts";
+export { ConflictError, NotFoundError } from "./sqlite-store.ts";
+let store: ReturnType<typeof openStore> | undefined;
+const db = () => store ??= openStore(process.env.CAMPAIGN_DB_PATH || path.join(process.cwd(), "data", "campaign-brief-studio.sqlite"));
+export const createAndStart = (...args: Parameters<ReturnType<typeof openStore>["createAndStart"]>) => db().createAndStart(...args);
+export const retryFailed = (...args: Parameters<ReturnType<typeof openStore>["retryFailed"]>) => db().retryFailed(...args);
+export const submitRevision = (...args: Parameters<ReturnType<typeof openStore>["submitRevision"]>) => db().submitRevision(...args);
+export const completeAttempt = (...args: Parameters<ReturnType<typeof openStore>["completeAttempt"]>) => db().completeAttempt(...args);
+export const failAttempt = (...args: Parameters<ReturnType<typeof openStore>["failAttempt"]>) => db().failAttempt(...args);
+export const reviewBrief = (...args: Parameters<ReturnType<typeof openStore>["reviewBrief"]>) => db().reviewBrief(...args);
+export const getBrief = (id: string) => db().getBrief(id);
+export const listBriefs = () => db().listBriefs();

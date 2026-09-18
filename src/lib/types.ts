@@ -1,6 +1,9 @@
-export const STATUSES = ["Draft", "Submitted", "Generating", "Needs review", "Approved", "Rejected", "Revision requested", "Failed"] as const;
+export const STATUSES = ["Draft", "Submitted", "Generating", "Needs review", "Revision requested", "Failed", "Approved", "Rejected"] as const;
 export type BriefStatus = (typeof STATUSES)[number];
 export type CampaignBrief = { businessName: string; industry: string; targetAudience: string; offer: string; objective: string; brandVoice: string; channels: string[]; constraints: string; sourceMaterial?: string };
 export type CampaignPlan = { briefSummary: string; audienceInsights: string[]; messagingAngles: { title: string; rationale: string; sample: string }[]; landingPageOutline: { section: string; purpose: string }[]; sevenDayContentPlan: { day: string; channel: string; format: string; topic: string; CTA: string }[]; assumptions: string[]; risks: string[]; reviewQuestions: string[]; confidence: "high" | "medium" | "low" };
-export type Activity = { id: string; at: string; action: string; detail: string; reviewer?: string };
-export type StoredBrief = { id: string; createdAt: string; updatedAt: string; status: BriefStatus; brief: CampaignBrief; plan?: CampaignPlan; reviewNote?: string; activities: Activity[] };
+export type Activity = { id: string; at: string; action: string; detail: string };
+export type BriefRevision = { id: string; number: number; brief: CampaignBrief; instructions?: string; createdAt: string };
+export type GenerationAttempt = { id: string; revisionId: string; operationKey: string; status: "Generating" | "Succeeded" | "Failed" | "Expired"; startedAt: string; expiresAt: string; error?: string };
+export type StoredPlan = { id: string; revisionId: string; attemptId: string; createdAt: string; plan: CampaignPlan; mode: "Webhook" | "Demo" | "Legacy" };
+export type StoredBrief = { id: string; createdAt: string; updatedAt: string; version: number; status: BriefStatus; brief: CampaignBrief; plan?: CampaignPlan; planId?: string; reviewNote?: string; activities: Activity[]; revisions: BriefRevision[]; attempts: GenerationAttempt[]; plans: StoredPlan[] };
