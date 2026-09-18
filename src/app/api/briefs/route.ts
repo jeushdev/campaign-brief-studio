@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+import { createDemoPlan } from "@/lib/demo-plan";
+import { createBrief, failBrief, saveGeneratedPlan, updateBrief } from "@/lib/store";
+import { validateBrief } from "@/lib/validation";
+import { requestCampaignPlan } from "@/lib/webhook";
+export const runtime = "nodejs";
+export async function POST(request: Request) { const body = await request.json(); const checked = validateBrief(body); if (!checked.valid) return NextResponse.json({ errors: checked.errors }, { status: 422 }); const record = await createBrief(checked.brief); await updateBrief(record.id, { status: "Submitted" }, "Submitted", "Required inputs passed validation."); await updateBrief(record.id, { status: "Generating" }, "Generation started", process.env.N8N_WEBHOOK_URL ? "Submitted to configured n8n webhook." : "Demo-mode generator selected; no webhook configured."); if (!process.env.N8N_WEBHOOK_URL) { const saved = await saveGeneratedPlan(record.id, createDemoPlan(checked.brief), "Demo"); return NextResponse.json({ id: saved?.id, mode: "demo" }, { status: 201 }); } const result = await requestCampaignPlan(record.id, checked.brief); if (!result.ok || !result.plan) { await failBrief(record.id, result.error ?? "No valid plan returned."); return NextResponse.json({ id: record.id, error: result.error }, { status: 502 }); } const saved = await saveGeneratedPlan(record.id, result.plan, "Webhook"); return NextResponse.json({ id: saved?.id, mode: "webhook" }, { status: 201 }); }

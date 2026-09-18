@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { setStatus } from "@/lib/store";
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) { const body = await request.json() as { decision?: "Approved" | "Revision requested" | "Failed"; note?: string }; if (!body.decision || !["Approved", "Revision requested", "Failed"].includes(body.decision)) return NextResponse.json({ error: "Valid decision required." }, { status: 422 }); const item = await setStatus((await params).id, body.decision, String(body.note ?? "")); return item ? NextResponse.json(item) : NextResponse.json({ error: "Brief not found." }, { status: 404 }); }

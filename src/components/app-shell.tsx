@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function AppShell({ children }: { children: React.ReactNode }) { return <div className="shell"><aside><Link className="brand" href="/"><span>CB</span> Campaign<br />Brief Studio</Link><nav><Link href="/">Dashboard</Link><Link href="/briefs/new">New brief</Link><Link href="/review">Review queue</Link><Link href="/settings">Workflow & settings</Link></nav><p className="side-note">All generated material is a draft. Human approval is required before external use.</p></aside><main>{children}</main></div>; }
