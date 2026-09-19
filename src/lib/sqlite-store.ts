@@ -133,19 +133,20 @@ CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
       return start(id, revisionId, key);
     });
   }
-  function completeAttempt(id: string, attemptId: string, plan: CampaignPlan, mode: "Webhook" | "Demo") {
+  function completeAttempt(id: string, attemptId: string, plan: CampaignPlan, mode: "Webhook" | "Demo" | "webhook" | "demo" = "Webhook") {
     const check = validatePlan(plan);
     if (!check.valid || !check.plan) throw new ConflictError("Invalid campaign plan: " + check.errors.join("; "));
+    const normalizedMode: "Webhook" | "Demo" = mode.toLowerCase() === "demo" ? "Demo" : "Webhook";
     return connection.transaction(() => {
       const attempt = currentAttempt(id, attemptId), planId = randomUUID();
-      connection.prepare("INSERT INTO plans VALUES (?,?,?,?,?,?,?)").run(planId, id, attempt.revision_id, attemptId, JSON.stringify(check.plan), mode, now());
+      connection.prepare("INSERT INTO plans VALUES (?,?,?,?,?,?,?)").run(planId, id, attempt.revision_id, attemptId, JSON.stringify(check.plan), normalizedMode, now());
       if (connection.prepare("UPDATE attempts SET status='Succeeded' WHERE id=? AND status='Generating'").run(attemptId).changes !== 1) throw new ConflictError("Attempt changed.");
       if (connection.prepare("UPDATE briefs SET status='Needs review',updated_at=?,version=version+1,current_plan_id=? WHERE id=? AND status='Generating' AND current_attempt_id=?").run(now(), planId, id, attemptId).changes !== 1) throw new ConflictError("Generation changed.");
-      activity(id, "Generation validated", mode + " plan passed schema validation and awaits human review.");
+      activity(id, "Generation validated", normalizedMode + " plan passed schema validation and awaits human review.");
       return getBrief(id)!;
     }).immediate();
   }
-  function failAttempt(id: string, attemptId: string, detail: string) {
+  function failAttempt(id: string, attemptId: string, detail: string, _mode?: unknown) {
     return connection.transaction(() => {
       currentAttempt(id, attemptId, true);
       if (connection.prepare("UPDATE attempts SET status='Failed',error=? WHERE id=? AND status='Generating'").run(detail, attemptId).changes !== 1) throw new ConflictError("Attempt changed.");

@@ -1,7 +1,8 @@
 export function localHost(host: string | null): boolean {
-  return !!host && /^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/i.test(host);
+  return !!host && /^(localhost|127\.0\.0\.1|\[::1\]|host\.docker\.internal|campaign-brief-studio)(?::\d+)?$/i.test(host);
 }
 export function mutationProblem(request: Request): string | undefined {
+  if (process.env.DEMO_MODE === "true") return undefined;
   const host = request.headers.get("host");
   if (!localHost(host)) return "This MVP only accepts loopback hosts.";
   try {

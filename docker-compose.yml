@@ -3,6 +3,10 @@ services:
     image: n8nio/n8n
     env_file:
       - .env.local
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
 
   campaign-brief-studio:
     build:
@@ -12,6 +16,8 @@ services:
       - .env.local
     environment:
       CAMPAIGN_DB_PATH: /app/data/campaign-brief-studio.sqlite
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/campaign-brief-studio
+      APP_URL: http://campaign-brief-studio:3000
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
@@ -20,3 +26,4 @@ services:
 
 volumes:
   campaign-brief-data:
+  n8n_data:

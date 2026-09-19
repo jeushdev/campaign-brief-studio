@@ -24,9 +24,13 @@ const stub = createServer(async (request, response) => {
     const context = JSON.parse(raw), prepared = vm.runInNewContext("(function(){" + code("Prepare request") + "})()", { $json: { body: context } })[0].json;
     if (!prepared.request) { response.writeHead(prepared.statusCode, { "Content-Type": "application/json" }); response.end(JSON.stringify(prepared.body)); return; }
     calls++;
-    const result = failNext ? { statusCode: 429, body: {} } : { statusCode: 200, body: { status: "completed", output: [{ type: "message", content: [{ type: "output_text", text: JSON.stringify(createDemoPlan(context.brief)) }] }] } };
+    const plan = createDemoPlan(context.brief);
+    const result = failNext ? { statusCode: 429, body: {} } : { statusCode: 200, body: { choices: [{ message: { content: JSON.stringify(plan) }, finish_reason: "stop" }] } };
     failNext = false;
     const output = vm.runInNewContext("(function(){" + code("Validate response") + "})()", { $json: result, $: () => ({ first: () => ({ json: prepared }) }) })[0].json;
+    if (context.callbackUrl && output.statusCode === 200) {
+      await fetch(context.callbackUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(output.body) }).catch(() => {});
+    }
     response.writeHead(output.statusCode, { "Content-Type": "application/json" }); response.end(JSON.stringify(output.body));
   } catch (error) { response.writeHead(500); response.end(String(error)); }
 });
@@ -36,7 +40,7 @@ const portProbe = createServer(); portProbe.listen(0, "127.0.0.1"); await once(p
 const port = (portProbe.address() as { port: number }).port; await new Promise<void>((resolve) => portProbe.close(() => resolve()));
 const origin = "http://127.0.0.1:" + port;
 const child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", String(port)], {
-  windowsHide: true, env: { ...process.env, CAMPAIGN_DB_PATH: file, N8N_WEBHOOK_URL: "http://127.0.0.1:" + stubPort, N8N_WEBHOOK_SECRET: secret, NODE_ENV: "production" }, stdio: ["ignore", "pipe", "pipe"],
+  windowsHide: true, env: { ...process.env, APP_URL: origin, CAMPAIGN_DB_PATH: file, N8N_WEBHOOK_URL: "http://127.0.0.1:" + stubPort, N8N_WEBHOOK_SECRET: secret, NODE_ENV: "production" }, stdio: ["ignore", "pipe", "pipe"],
 });
 let logs = ""; child.stdout.on("data", (chunk) => logs += chunk); child.stderr.on("data", (chunk) => logs += chunk);
 async function post(route: string, body: unknown, key = randomUUID()) {

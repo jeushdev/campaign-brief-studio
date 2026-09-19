@@ -13,8 +13,9 @@ export async function runGeneration(briefId: string, attemptId: string) {
       completeAttempt(briefId, attemptId, demo, "Demo"); return { mode: "demo" as const };
     }
     const result = await requestCampaignPlan(briefId, attemptId, revision.brief, revision.instructions);
-    if (!result.ok || !result.plan) throw new Error(result.error ?? "No valid plan returned.");
-    completeAttempt(briefId, attemptId, result.plan, "Webhook"); return { mode: "webhook" as const };
+    if (!result.ok) throw new Error(result.error ?? "Webhook request failed.");
+    if (result.plan) completeAttempt(briefId, attemptId, result.plan, "Webhook");
+    return { mode: "webhook" as const };
   } catch (error) {
     const detail = error instanceof Error ? error.message : "Generation failed.";
     try { failAttempt(briefId, attemptId, detail); } catch { /* A newer attempt may already own the brief. Never overwrite it. */ }
