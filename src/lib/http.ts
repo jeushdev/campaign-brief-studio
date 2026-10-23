@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { ConflictError, NotFoundError } from "./store";
 import { mutationProblem } from "./local-access";
+import { readBoundedJson, RequestBodyError } from "./body-reader";
 export function requireLocalMutation(request: Request) { const problem = mutationProblem(request); return problem ? NextResponse.json({ error: problem }, { status: 403 }) : undefined; }
 export async function readJson(request: Request): Promise<{ body: unknown } | { response: NextResponse }> {
-  try { return { body: await request.json() }; } catch { return { response: NextResponse.json({ error: "Request body must be valid JSON." }, { status: 400 }) }; }
+  try { return { body: await readBoundedJson(request) }; } catch (error) { return { response: NextResponse.json({ error: error instanceof RequestBodyError ? error.message : "Request body must be valid JSON." }, { status: error instanceof RequestBodyError ? error.status : 400 }) }; }
 }
 export function operationKey(request: Request) { return request.headers.get("idempotency-key")?.trim() || ""; }
 export function errorResponse(error: unknown) {

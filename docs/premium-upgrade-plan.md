@@ -2,7 +2,7 @@
 
 Date: 2026-10-23
 
-Status: Proposed. Planning complete; implementation has not started.
+Status: Local implementation and portfolio package completed overnight on 2026-10-24 after the authorized second pass. Automated checks, isolated production smoke, browser acceptance, and independent correctness/visual review passed within the observed scope. User/device/assistive-technology, comprehensive accessibility/performance, live-provider, Docker, and deployment evidence remains pending as recorded in `docs/testing-checklist.md`. The user delegated design decisions; that delegation does not establish those external acceptance results. See `docs/design-direction.md` for the second-pass decisions.
 
 Baseline: `334ab7c` on `main`, initially clean working tree.
 
@@ -79,7 +79,7 @@ Use Apple's principles as a reference for hierarchy, legibility, and material re
 - **Motion:** brief state transitions and precise hover/press feedback. No artificial generation percentages; show only stages the system actually observes. Respect reduced motion.
 - **Identity:** retain Campaign Brief Studio. Use the brief-to-reviewed-plan relationship as the signature interaction. A dedicated logo redesign is optional and outside the initial UI milestone.
 
-This direction is a recommendation, not an approved mockup. M0 compares a few materially different compositions within the user's clean, professional, Apple-inspired brief before code is written.
+The user subsequently delegated visual selection and full implementation. The second-pass review selected the native document workspace composition described in `docs/design-direction.md`; there is no pending concept-selection gate.
 
 ## 4. Experience by screen
 
@@ -112,7 +112,7 @@ Execute one coherent milestone at a time. Each has a local Conventional Commit a
 
 **Deliverables:** Confirmed product brief, selected visual concept, route/state map, design intent, content fixtures, and implementation acceptance checklist. Record proposed tokens; document the implemented design system in `DESIGN.md` after M1 establishes it.
 
-**Gate:** User selects the visual concept; all five routes and important failure states fit the concept. This is the principal visual approval point, not a request to approve individual CSS values.
+**Gate:** All five routes and important failure states fit the selected concept. User selection was delegated for this run; independent review of the completed implementation replaces the proposed concept-selection pause.
 
 ### M1 — design foundation, application shell, and dashboard
 
@@ -214,6 +214,6 @@ Before writing implementation code, read the relevant guides in the installed `n
 
 **Decide before M5:** Public-demo scope and isolation architecture, intended hosting environment, and whether public hosting is required. Shared real-client usage requires a separate architecture/security scope, not just UI changes.
 
-**Recommended next action:** Approve M0 only. Produce and review the design concepts before implementing the application redesign. Then execute M1–M6 in order, with M4 required before any shared live exposure and M5 isolation required before a public interactive demonstration.
+**Execution decision:** The user authorized M0–M6 and delegated design choices. Complete the local upgrade and isolated demonstration with independent review. Public/shared live operation remains outside this run.
 
-This document authorizes no implementation, deployment, external notifications, purchases, or production-data use by itself.
+Deployment, external notifications, purchases, and production-data use remain outside authorization. Implementation is authorized by the user's subsequent request, not inferred from this plan alone.

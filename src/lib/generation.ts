@@ -1,5 +1,5 @@
 import { createDemoPlan } from "./demo-plan";
-import { completeAttempt, failAttempt, getBrief } from "./store";
+import { completeAttempt, failAttempt, getBrief, ConflictError, NotFoundError } from "./store";
 import { requestCampaignPlan } from "./webhook";
 export async function runGeneration(briefId: string, attemptId: string) {
   try {
@@ -13,12 +13,15 @@ export async function runGeneration(briefId: string, attemptId: string) {
       completeAttempt(briefId, attemptId, demo, "Demo"); return { mode: "demo" as const };
     }
     const result = await requestCampaignPlan(briefId, attemptId, revision.brief, revision.instructions);
+    if (result.uncertain) { console.warn("Generation dispatch unconfirmed:", { briefId, attemptId, detail: result.error }); return { mode: "webhook" as const }; }
     if (!result.ok) throw new Error(result.error ?? "Webhook request failed.");
     if (result.plan) completeAttempt(briefId, attemptId, result.plan, "Webhook");
     return { mode: "webhook" as const };
   } catch (error) {
     const detail = error instanceof Error ? error.message : "Generation failed.";
-    try { failAttempt(briefId, attemptId, detail); } catch { /* A newer attempt may already own the brief. Never overwrite it. */ }
+    try { failAttempt(briefId, attemptId, detail); } catch (storageError) {
+      if (!(storageError instanceof ConflictError || storageError instanceof NotFoundError)) console.error("Recording generation failure failed:", storageError);
+    }
     return { error: detail };
   }
 }

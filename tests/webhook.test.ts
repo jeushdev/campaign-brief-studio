@@ -4,12 +4,16 @@ import { requestCampaignPlan } from "../src/lib/webhook.ts";
 import { brief } from "./fixtures.ts";
 
 test("app handles webhook dispatch, response status codes, timeouts, and required configuration", async (t) => {
-  const oldUrl = process.env.N8N_WEBHOOK_URL, oldSecret = process.env.N8N_WEBHOOK_SECRET;
+  const oldUrl = process.env.N8N_WEBHOOK_URL, oldSecret = process.env.N8N_WEBHOOK_SECRET, oldCallbackSecret = process.env.N8N_CALLBACK_SECRET, oldAppUrl = process.env.APP_URL;
   process.env.N8N_WEBHOOK_URL = "http://example.invalid/test";
   process.env.N8N_WEBHOOK_SECRET = "test-only-secret";
+  process.env.N8N_CALLBACK_SECRET = "test-only-callback-secret";
+  process.env.APP_URL = "http://localhost:3000";
   t.after(() => {
     if (oldUrl === undefined) delete process.env.N8N_WEBHOOK_URL; else process.env.N8N_WEBHOOK_URL = oldUrl;
     if (oldSecret === undefined) delete process.env.N8N_WEBHOOK_SECRET; else process.env.N8N_WEBHOOK_SECRET = oldSecret;
+    if (oldCallbackSecret === undefined) delete process.env.N8N_CALLBACK_SECRET; else process.env.N8N_CALLBACK_SECRET = oldCallbackSecret;
+    if (oldAppUrl === undefined) delete process.env.APP_URL; else process.env.APP_URL = oldAppUrl;
   });
 
   let interceptedBody: Record<string, unknown> | undefined;
@@ -25,6 +29,7 @@ test("app handles webhook dispatch, response status codes, timeouts, and require
   assert.equal(interceptedHeaders?.get("x-campaign-webhook-secret"), "test-only-secret");
   assert.equal(interceptedBody?.briefId, "brief");
   assert.equal(interceptedBody?.attemptId, "attempt");
+  assert.equal(interceptedBody?.callbackSecret, undefined);
   assert.match(interceptedBody?.callbackUrl as string, /\/api\/webhooks\/generation-complete$/);
   mockSuccess.mock.restore();
 
@@ -39,8 +44,18 @@ test("app handles webhook dispatch, response status codes, timeouts, and require
   const mockTimeout = t.mock.method(globalThis, "fetch", async () => {
     throw new DOMException("timeout", "TimeoutError");
   });
-  assert.match((await requestCampaignPlan("brief", "attempt", brief)).error!, /timed out/);
+  const timedOut = await requestCampaignPlan("brief", "attempt", brief);
+  assert.match(timedOut.error!, /timed out/);
+  assert.equal(timedOut.uncertain, true);
   mockTimeout.mock.restore();
+
+  delete process.env.N8N_CALLBACK_SECRET;
+  assert.match((await requestCampaignPlan("brief", "attempt", brief)).error!, /separate N8N_CALLBACK_SECRET/);
+  process.env.N8N_CALLBACK_SECRET = process.env.N8N_WEBHOOK_SECRET;
+  assert.match((await requestCampaignPlan("brief", "attempt", brief)).error!, /separate N8N_CALLBACK_SECRET/);
+  process.env.N8N_CALLBACK_SECRET = "test-only-callback-secret";
+  process.env.APP_URL = "http://evil.test";
+  assert.match((await requestCampaignPlan("brief", "attempt", brief)).error!, /APP_URL/);
 
   delete process.env.N8N_WEBHOOK_SECRET;
   assert.match((await requestCampaignPlan("brief", "attempt", brief)).error!, /required/);

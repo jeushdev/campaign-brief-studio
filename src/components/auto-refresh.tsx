@@ -7,10 +7,10 @@ export function AutoRefresh() {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      router.refresh();
-    }, 3000);
-    return () => clearInterval(timer);
+    const refresh = () => { if (document.visibilityState === "visible") router.refresh(); };
+    const timer = setInterval(refresh, 3000);
+    document.addEventListener("visibilitychange", refresh);
+    return () => { clearInterval(timer); document.removeEventListener("visibilitychange", refresh); };
   }, [router]);
 
   return null;

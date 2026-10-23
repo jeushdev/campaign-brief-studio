@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T15:57:25Z",
+  "title": "Design System: Campaign Brief Studio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Studio Cobalt",
+        "canonical": "#3159d8",
+        "tonalRamp": ["oklch(15% 0.206 267)", "oklch(25% 0.206 267)", "oklch(35% 0.206 267)", "oklch(45% 0.206 267)", "oklch(55% 0.206 267)", "oklch(65% 0.206 267)", "oklch(75% 0.206 267)", "oklch(95% 0.206 267)"]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Cobalt Press",
+        "canonical": "#2548b8",
+        "tonalRamp": ["oklch(15% 0.19 267)", "oklch(25% 0.19 267)", "oklch(35% 0.19 267)", "oklch(45% 0.19 267)", "oklch(55% 0.19 267)", "oklch(65% 0.19 267)", "oklch(75% 0.19 267)", "oklch(95% 0.19 267)"]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#24262b",
+        "tonalRamp": ["oklch(15% 0.008 270)", "oklch(25% 0.008 270)", "oklch(35% 0.008 270)", "oklch(45% 0.008 270)", "oklch(55% 0.008 270)", "oklch(65% 0.008 270)", "oklch(75% 0.008 270)", "oklch(95% 0.008 270)"]
+      },
+      "muted-text": {
+        "role": "neutral",
+        "displayName": "Soft Graphite",
+        "canonical": "#686b73",
+        "tonalRamp": ["oklch(15% 0.01 270)", "oklch(25% 0.01 270)", "oklch(35% 0.01 270)", "oklch(45% 0.01 270)", "oklch(55% 0.01 270)", "oklch(65% 0.01 270)", "oklch(75% 0.01 270)", "oklch(95% 0.01 270)"]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Fine Rule",
+        "canonical": "#e6e6e9",
+        "tonalRamp": ["oklch(15% 0.003 270)", "oklch(25% 0.003 270)", "oklch(35% 0.003 270)", "oklch(45% 0.003 270)", "oklch(55% 0.003 270)", "oklch(65% 0.003 270)", "oklch(75% 0.003 270)", "oklch(95% 0.003 270)"]
+      },
+      "document-paper": {
+        "role": "neutral",
+        "displayName": "Document White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"]
+      },
+      "workspace-cool": {
+        "role": "neutral",
+        "displayName": "Cool Workspace",
+        "canonical": "#f7f7f9",
+        "tonalRamp": ["oklch(15% 0.004 270)", "oklch(25% 0.004 270)", "oklch(35% 0.004 270)", "oklch(45% 0.004 270)", "oklch(55% 0.004 270)", "oklch(65% 0.004 270)", "oklch(75% 0.004 270)", "oklch(95% 0.004 270)"]
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Validation Red",
+        "canonical": "#ab313b",
+        "tonalRamp": ["oklch(15% 0.145 20)", "oklch(25% 0.145 20)", "oklch(35% 0.145 20)", "oklch(45% 0.145 20)", "oklch(55% 0.145 20)", "oklch(65% 0.145 20)", "oklch(75% 0.145 20)", "oklch(95% 0.145 20)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Page Display", "purpose": "Page and campaign headings." },
+      "title": { "displayName": "Section Title", "purpose": "Section headings and major document divisions." },
+      "body": { "displayName": "Body", "purpose": "Default interface and campaign copy." },
+      "label": { "displayName": "Control Label", "purpose": "Buttons and compact interactive labels." },
+      "navigation": { "displayName": "Navigation", "purpose": "Workspace navigation links." },
+      "status": { "displayName": "Status", "purpose": "Compact plan-state labels." },
+      "field": { "displayName": "Field Text", "purpose": "Global form inputs and selects." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "control-feedback", "value": "150ms ease", "purpose": "Button, border, and form-control state changes." },
+      { "name": "workspace-settle", "value": "350ms cubic-bezier(.16, 1, .3, 1)", "purpose": "Subtle arrival of the main workspace content." }
+    ],
+    "breakpoints": [
+      { "name": "wide-spacing", "value": "1200px" },
+      { "name": "top-navigation", "value": "960px" },
+      { "name": "compact-navigation", "value": "640px" },
+      { "name": "demo-context-layout", "value": "1320px" },
+      { "name": "form-sections", "value": "720px" },
+      { "name": "form-fields", "value": "520px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action for creating, saving, or confirming a deliberate step.",
+      "html": "<button class=\"ds-primary\" type=\"button\">Create brief</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 16px;border:1px solid transparent;border-radius:8px;background:var(--accent);color:#fff;font:550 13px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;transition:background-color 150ms ease,border-color 150ms ease,transform 150ms ease}.ds-primary:hover:not(:disabled){background:var(--accent-hover)}.ds-primary:active:not(:disabled){transform:translateY(1px)}.ds-primary:disabled{opacity:.55;cursor:not-allowed}.ds-primary:focus-visible{outline:3px solid #7290f0;outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A supporting action such as clearing a filter or returning to a previous step.",
+      "html": "<button class=\"ds-secondary\" type=\"button\">Clear filters</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 16px;border:1px solid #d9dbe1;border-radius:8px;background:var(--paper);color:var(--ink);font:550 13px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;transition:background-color 150ms ease,border-color 150ms ease,transform 150ms ease}.ds-secondary:hover:not(:disabled){background:#f2f3f7;border-color:#b8becb}.ds-secondary:active:not(:disabled){transform:translateY(1px)}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}.ds-secondary:focus-visible{outline:3px solid #7290f0;outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "A labeled form field with helper, focus, and invalid states.",
+      "html": "<label class=\"ds-field\"><span>Campaign objective</span><input type=\"text\" placeholder=\"What should this campaign achieve?\" aria-describedby=\"ds-field-help\"><small id=\"ds-field-help\">Describe the outcome in a sentence.</small></label>",
+      "css": ".ds-field{display:grid;gap:7px;min-width:0;color:var(--ink);font:550 14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-field input{width:100%;max-width:100%;min-width:0;min-height:42px;padding:10px 12px;border:1px solid #d6d9e1;border-radius:8px;background:var(--paper);color:var(--ink);font:400 15px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-field input::placeholder{color:#6f737c;opacity:1}.ds-field input:focus-visible{outline:3px solid #7290f0;outline-offset:3px}.ds-field input[aria-invalid=true]{border-color:var(--danger)}.ds-field small{color:var(--muted);font:400 12px/1.45 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}"
+    },
+    {
+      "name": "Current Navigation Link",
+      "kind": "nav",
+      "refersTo": "nav-current",
+      "description": "Marks the operator's current workspace route.",
+      "html": "<nav aria-label=\"Main navigation\"><a class=\"ds-nav-link\" href=\"#campaigns\" aria-current=\"page\">Campaigns</a></nav>",
+      "css": ".ds-nav-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:7px;color:#3153b7;background:#edf0fc;font:500 13px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;text-decoration:none}.ds-nav-link:focus-visible{outline:3px solid #7290f0;outline-offset:3px}"
+    },
+    {
+      "name": "Needs Review Status",
+      "kind": "chip",
+      "refersTo": "status-needs-review",
+      "description": "A compact text-and-dot label for a plan awaiting a human decision.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-status-dot\" aria-hidden=\"true\"></span>Needs review</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:5px;background:#fff3dc;color:#805a17;font:600 10px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;white-space:nowrap}.ds-status-dot{width:4px;height:4px;flex:none;border-radius:50%;background:currentColor}"
+    },
+    {
+      "name": "Campaign Document Surface",
+      "kind": "card",
+      "refersTo": "campaign-document",
+      "description": "The bordered white reading surface that holds a campaign plan.",
+      "html": "<article class=\"ds-document\"><header><p>Forma Studio</p><h2>Make space for better work</h2><p>Campaign objective and plan status</p></header><div class=\"ds-plan\"><section><h3>Campaign strategy</h3><p>Keep the message clear, useful, and grounded in the provided brief.</p></section></div></article>",
+      "css": ".ds-document{min-width:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-document header{padding:24px 34px;border-bottom:1px solid var(--line)}.ds-plan{padding:0 34px}.ds-document header p:first-child{margin:0 0 5px;color:var(--muted);font-size:13px;font-weight:650}.ds-document h2{margin:0 0 8px;font-size:21px;font-weight:620;line-height:1.35;letter-spacing:-.025em}.ds-document header p:last-child{margin:0;color:var(--muted);font-size:13px}.ds-document section{padding:35px 0;border-top:1px solid var(--line)}.ds-document h3{margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.45}.ds-document section p{max-width:75ch;margin:0;color:#4e5360;font-size:13px;line-height:1.85;overflow-wrap:anywhere}@media(max-width:640px){.ds-document header{padding:18px 21px}.ds-plan{padding:0 21px}.ds-document section{padding:27px 0}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Daylit Document Studio",
+    "overview": "Campaign Brief Studio is a quiet working surface for moving a business brief into a considered campaign plan. The cool, near-white workspace gives the white document a clear reading edge; graphite text and fine neutral rules keep attention on the strategy. The host system font makes the interface feel at home on the operator's Windows machine, while a single cobalt family marks actions and active wayfinding.\n\nThe campaign document is the visual center. Navigation stays compact, source context can be disclosed when needed, and review decisions sit beside the work they affect. Small geometric icons and restrained motion support orientation without competing with copy. Fictional examples and simulated behavior remain visibly identified.",
+    "keyCharacteristics": [
+      "Cool, daylit neutrals with a white document surface",
+      "Document-led hierarchy and calm navigation",
+      "Cobalt actions, thin rules, and precise state feedback",
+      "System UI typography and small geometric icons"
+    ],
+    "rules": [
+      { "name": "The One Cobalt Rule", "body": "Use the cobalt family for action and active wayfinding. Reserve separate semantic colors for statuses and validation, and pair those states with text or shape.", "section": "colors" },
+      { "name": "The Surface Contrast Rule", "body": "Use tonal contrast and a fine border to separate a working surface; do not add a shadow layer to cards or panels.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the campaign text as the main visual material and make the next action easy to find.",
+      "Do use cobalt for primary actions, links, focus, and current wayfinding.",
+      "Do label simulated examples and distinguish fictional content from operator workspace state.",
+      "Do pair status color with a written label and a distinct form.",
+      "Do preserve keyboard focus, reduced-motion support, and responsive reflow.",
+      "Do keep review actions explicit and close to the plan they change."
+    ],
+    "donts": [
+      "Don't add decorative imagery, dashboards, or motion that competes with campaign copy.",
+      "Don't use color as the only way to indicate status, confidence, or validation.",
+      "Don't add a fixed inspector that takes the campaign document's reading space.",
+      "Don't imply that generated audience insights are verified research or that simulated work is live.",
+      "Don't introduce shadows to cards or panels."
+    ]
+  }
+}

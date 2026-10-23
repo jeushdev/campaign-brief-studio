@@ -12,6 +12,7 @@ RUN npm ci
 FROM dependencies AS builder
 
 WORKDIR /app
+ENV CAMPAIGN_STANDALONE=true
 COPY . .
 RUN npm run build
 
@@ -27,8 +28,8 @@ RUN groupadd --system --gid 1001 nodejs \
   && useradd --system --uid 1001 --gid nodejs nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next-studio/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next-studio/static ./.next-studio/static
 
 RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 

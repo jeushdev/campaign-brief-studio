@@ -14,4 +14,7 @@ export const getBrief = (id: string) => {
   const brief = db().getBrief(id), attempt = brief?.attempts.at(-1);
   return brief ? { ...brief, generationExpired: brief.status === "Generating" && !!attempt && Date.parse(attempt.expiresAt) <= Date.now() } : undefined;
 };
-export const listBriefs = () => db().listBriefs();
+export const listBriefs = () => db().listBriefs().map((brief) => {
+  const attempt = brief.attempts.at(-1);
+  return { ...brief, generationExpired: brief.status === "Generating" && !!attempt && Date.parse(attempt.expiresAt) <= Date.now() };
+});

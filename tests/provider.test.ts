@@ -5,7 +5,7 @@ import fs from "node:fs";
 import { buildProviderRequest, parseProviderResponse } from "../src/lib/provider-contract.ts";
 import { buildWorkflow } from "../scripts/workflow.ts";
 import { brief, plan } from "./fixtures.ts";
-const context = { contractVersion: 1, briefId: "test-brief", attemptId: "test-attempt", brief, revisionInstructions: "Use revised inputs" };
+const context = { contractVersion: 1, briefId: "test-brief", attemptId: "test-attempt", brief, revisionInstructions: "Use revised inputs", callbackUrl: "http://localhost:3000/api/webhooks/generation-complete" };
 const raw = (value: unknown = plan()) => ({ choices: [{ message: { content: JSON.stringify(value) }, finish_reason: "stop" }] });
 test("provider adapter uses strict object body and rejects unsupported providers", () => {
   const request = buildProviderRequest("groq", "openai/gpt-oss-120b", context);
@@ -15,7 +15,7 @@ test("provider adapter uses strict object body and rejects unsupported providers
   assert.throws(() => buildProviderRequest("openai", "gpt-4.1-mini", context), /Unsupported/);
   assert.throws(() => buildProviderRequest("groq", "openai/gpt-oss-120b", { ...context, brief: { ...brief, channels: [] } }), /item count/);
 });
-test("raw Responses extraction handles all content and failure paths", () => {
+test("Groq chat-completion extraction handles content and failure paths", () => {
   assert.deepEqual(parseProviderResponse(raw()), { ok: true, plan: plan() });
   const errors: [unknown, string][] = [
     [{ statusCode: 429, body: { error: {} } }, "http_error"],
@@ -38,10 +38,13 @@ test("exported n8n node code executes shared validation and fixture round trip",
   assert.equal(node("Groq response").parameters.options.timeout, 35000);
   assert.equal(node("Groq response").onError, "continueRegularOutput");
   assert.equal(node("Groq response").parameters.jsonBody, "={{ $json.request }}");
-  const prepare = (body: unknown) => vm.runInNewContext("(function(){" + node("Prepare request").parameters.jsCode + "})()", { $json: { body } })[0].json;
+  const prepare = (body: unknown) => vm.runInNewContext("(function(){" + node("Prepare request").parameters.jsCode + "})()", { URL, $env: { CAMPAIGN_CALLBACK_URL: context.callbackUrl }, $json: { body } })[0].json;
   const prepared = prepare(context);
   assert.equal(prepared.request.response_format.json_schema.strict, true);
-  assert.equal(prepare({ ...context, brief: null }).statusCode, 422);
+  assert.throws(() => prepare({ ...context, brief: null }), /brief/);
+  assert.throws(() => prepare({ ...context, callbackUrl: "http://evil.test/api/webhooks/generation-complete" }), /Callback URL/);
+  assert.equal(node("Callback result").parameters.authentication, "genericCredentialType");
+  assert.equal(node("Callback result").parameters.options.timeout, 10000);
   const execute = (response: unknown) => vm.runInNewContext("(function(){" + node("Validate response").parameters.jsCode + "})()", { $json: response, $: () => ({ first: () => ({ json: prepared }) }) })[0].json;
   const result = execute({ statusCode: 200, body: raw() });
   assert.equal(result.statusCode, 200); assert.equal(result.body.attemptId, context.attemptId);

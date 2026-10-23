@@ -1,0 +1,523 @@
+.workspace {
+  width: 100%;
+  color: var(--ink, #24262b);
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 22px;
+}
+
+.header h1 {
+  margin-bottom: 9px;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  letter-spacing: -0.035em;
+}
+
+.header p {
+  max-width: 62ch;
+  margin-bottom: 0;
+  color: var(--muted, #686b73);
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.headerActions > * {
+  margin-left: 0;
+}
+
+.simulation {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border: 1px solid #ead7a8;
+  border-radius: 12px;
+  color: #4c421f;
+}
+
+.simulation.notice {
+  margin: 0;
+  border: 1px solid #ead7a8;
+  background: #fff7e4;
+  padding: 14px 16px;
+}
+
+.simulation strong {
+  flex: 0 0 auto;
+}
+
+.simulation span {
+  color: #514a34;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(245px, 280px);
+  align-items: start;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.context {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.examplePicker,
+.briefSection,
+.document {
+  border: 1px solid var(--line, #e6e6e9);
+  border-radius: 12px;
+  background: var(--paper, #fff);
+}
+
+.draft {
+  max-width: 62ch;
+}
+
+.draft h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  letter-spacing: -0.025em;
+}
+
+.draft p:not(.documentBusiness) {
+  color: var(--muted, #686b73);
+}
+
+.draft button {
+  min-height: 44px;
+}
+
+.examplePicker,
+.briefSection {
+  padding: 17px;
+}
+
+.examplePicker label,
+.field > span:first-child {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 650;
+}
+
+.examplePicker select,
+.field input,
+.field textarea,
+.decisionForm textarea {
+  width: 100%;
+  border: 1px solid #c9cbd1;
+  border-radius: 8px;
+  padding: 10px 11px;
+  background: #fff;
+  color: var(--ink, #24262b);
+  font: inherit;
+}
+
+.examplePicker select {
+  min-height: 44px;
+}
+
+.examplePicker select:focus-visible,
+.field input:focus-visible,
+.field textarea:focus-visible,
+.decisionForm textarea:focus-visible {
+  outline: 3px solid #3159d8;
+  outline-offset: 2px;
+}
+
+.examplePicker p {
+  margin: 10px 0 0;
+  color: var(--muted, #686b73);
+  font-size: 0.9rem;
+}
+
+.briefSection {
+  margin-top: 14px;
+}
+
+.sectionTitle h2,
+.sectionTitle h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.sectionTitle p {
+  margin: 0;
+  color: var(--muted, #686b73);
+  font-size: 0.88rem;
+}
+
+.briefList {
+  margin: 13px 0 0;
+}
+
+.briefList div {
+  padding: 9px 0;
+  border-top: 1px solid var(--line, #e6e6e9);
+}
+
+.briefList dt {
+  margin-bottom: 3px;
+  color: var(--muted, #686b73);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.briefList dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.briefDisclosure {
+  margin-top: 13px;
+  border-top: 1px solid var(--line, #e6e6e9);
+}
+
+.briefDisclosure summary,
+.history summary {
+  padding: 12px 0 2px;
+  color: var(--accent, #3159d8);
+  font-weight: 650;
+  cursor: pointer;
+  text-underline-offset: 3px;
+}
+
+.formIntro {
+  margin: 12px 0;
+  color: var(--muted, #686b73);
+  font-size: 0.87rem;
+}
+
+.briefForm,
+.decisionForm {
+  display: grid;
+  gap: 13px;
+}
+
+.field {
+  display: block;
+  min-width: 0;
+}
+
+.field small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted, #686b73);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.field textarea,
+.decisionForm textarea {
+  resize: vertical;
+}
+
+.document {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding: clamp(20px, 3.3vw, 38px);
+}
+
+.document :global(.plan) { padding: 0; }
+
+.documentHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line, #e6e6e9);
+}
+
+.documentBusiness {
+  margin-bottom: 5px;
+  color: var(--muted, #686b73);
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.documentHeader h2 {
+  margin-bottom: 8px;
+  font-size: clamp(1.45rem, 2.5vw, 1.9rem);
+  letter-spacing: -0.025em;
+}
+
+.documentHeader p:last-child {
+  margin-bottom: 0;
+  color: var(--muted, #686b73);
+}
+
+.status {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: #edf0f6;
+  color: #313947;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.confidence {
+  flex: 0 0 auto;
+  border: 1px solid var(--line, #e6e6e9);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #464950;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.scopeNote {
+  margin: 15px 0 25px;
+  color: var(--muted, #686b73);
+  font-size: 0.9rem;
+}
+
+.history,
+.review,
+.activity {
+  margin-top: 32px;
+  padding-top: 23px;
+  border-top: 1px solid var(--line, #e6e6e9);
+}
+
+.history h3,
+.review h3,
+.activity h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.history details {
+  padding: 8px 0 12px;
+  border-bottom: 1px solid var(--line, #e6e6e9);
+}
+
+.history summary {
+  padding: 3px 0;
+}
+
+.history summary span {
+  color: var(--muted, #686b73);
+  font-weight: 400;
+}
+
+.history p,
+.history li {
+  max-width: 72ch;
+}
+
+.history p {
+  margin: 12px 0 7px;
+}
+
+.history h4 {
+  margin: 15px 0 5px;
+  font-size: 0.95rem;
+}
+
+.review > .sectionTitle {
+  margin-bottom: 15px;
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.actionButtons > * {
+  margin-left: 0;
+}
+
+.actionButtons button {
+  min-height: 42px;
+}
+
+.decisionForm {
+  margin-top: 17px;
+  padding: 17px;
+  border: 1px solid var(--line, #e6e6e9);
+  border-radius: 12px;
+  background: #fafafd;
+}
+
+.decisionForm > label:not(.acknowledgment) {
+  display: flex;
+  gap: 7px;
+  font-weight: 650;
+}
+
+.decisionForm > label > span {
+  color: var(--muted, #686b73);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.acknowledgment {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  line-height: 1.45;
+}
+
+.acknowledgment input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--accent, #3159d8);
+}
+
+.decisionForm .error {
+  margin: 0;
+}
+
+.revisionPrompt,
+.approved,
+.rejected {
+  margin-top: 14px;
+  padding: 15px 0 0;
+  border-top: 1px solid var(--line, #e6e6e9);
+}
+
+.revisionPrompt p,
+.approved p,
+.rejected {
+  max-width: 72ch;
+}
+
+.revisionPrompt button {
+  margin-top: 4px;
+}
+
+.approved > p {
+  color: #285e43;
+}
+
+.rejected {
+  color: #803939;
+}
+
+.exportHint {
+  margin: 13px 0 0;
+  color: var(--muted, #686b73);
+  font-size: 0.86rem;
+}
+
+.activity ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity li {
+  padding: 13px 0;
+  border-top: 1px solid var(--line, #e6e6e9);
+}
+
+.activity li > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.activity li > div > span {
+  color: var(--muted, #686b73);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.activity li p {
+  margin: 5px 0 0;
+  color: #4e5158;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1320px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .document {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .context {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.4fr);
+    align-items: start;
+    gap: 14px;
+  }
+
+  .briefSection {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .simulation {
+    display: block;
+    font-size: 12px;
+  }
+
+  .simulation strong { margin-right: 6px; }
+  .examplePicker { padding: 12px 15px; }
+  .examplePicker label { font-size: 12px; }
+  .examplePicker p { display: none; }
+  .briefSection { padding: 12px 15px; }
+  .briefSection > .sectionTitle { display: none; }
+  .briefDisclosure { margin: 0; border: 0; }
+  .briefDisclosure summary { padding: 2px 0; }
+  .context { gap: 8px; }
+  .confidence { display: none; }
+
+  .context {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .document {
+    padding: 20px 15px;
+  }
+
+  .documentHeader {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .actionButtons {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actionButtons button {
+    width: 100%;
+  }
+
+  .activity li > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+}

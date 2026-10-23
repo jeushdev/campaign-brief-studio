@@ -3,8 +3,10 @@ services:
     image: n8nio/n8n
     env_file:
       - .env.local
+    environment:
+      CAMPAIGN_CALLBACK_URL: http://campaign-brief-studio:3000/api/webhooks/generation-complete
     ports:
-      - "5678:5678"
+      - "127.0.0.1:5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
 

@@ -1,67 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CampaignPlan } from "@/lib/types";
+import { exportFileStem, formatPlanCsv, formatPlanMarkdown, type ExportMetadata } from "@/lib/plan-export";
 
-export function formatPlanMarkdown(plan: CampaignPlan): string {
-  const lines: string[] = [
-    "# Campaign Plan",
-    "",
-    `**Confidence:** ${plan.confidence}`,
-    "",
-    "## Brief Summary",
-    plan.briefSummary,
-    "",
-    "## Audience Insights",
-    ...plan.audienceInsights.map((insight) => `- ${insight}`),
-    "",
-    "## Messaging Angles",
-    ...plan.messagingAngles.flatMap((angle) => [
-      `### ${angle.title}`,
-      `- **Rationale:** ${angle.rationale}`,
-      `- **Sample:** ${angle.sample}`,
-      "",
-    ]),
-    "## Landing Page Outline",
-    ...plan.landingPageOutline.map((item) => `- **${item.section}:** ${item.purpose}`),
-    "",
-    "## 7-Day Content Plan",
-    ...plan.sevenDayContentPlan.flatMap((item) => [
-      `### ${item.day} - ${item.channel} (${item.format})`,
-      `- **Topic:** ${item.topic}`,
-      `- **CTA:** ${item.CTA}`,
-      "",
-    ]),
-    "## Assumptions",
-    ...plan.assumptions.map((item) => `- ${item}`),
-    "",
-    "## Risks",
-    ...plan.risks.map((item) => `- ${item}`),
-    "",
-    "## Review Questions",
-    ...plan.reviewQuestions.map((item) => `- ${item}`),
-  ];
+export { formatPlanMarkdown } from "@/lib/plan-export";
 
-  return lines.join("\n");
-}
+export function ExportControls({ plan, metadata }: { plan: CampaignPlan; metadata?: ExportMetadata }) {
+  const [feedback, setFeedback] = useState("");
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stem = exportFileStem(metadata?.businessName);
 
-export function ExportControls({ plan }: { plan: CampaignPlan }) {
-  const [copied, setCopied] = useState(false);
+  useEffect(() => () => {
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+  }, []);
 
-  async function handleCopy() {
-    const markdown = formatPlanMarkdown(plan);
-    await navigator.clipboard.writeText(markdown);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+  function announce(message: string) {
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    setFeedback(message);
+    feedbackTimer.current = setTimeout(() => setFeedback(""), 4500);
   }
 
-  return (
-    <div style={{ marginTop: "1rem" }}>
-      <button type="button" onClick={handleCopy}>
-        {copied ? "Copied!" : "Export Plan as Markdown"}
-      </button>
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(formatPlanMarkdown(plan, metadata));
+      announce("Markdown copied. You can paste the approved plan into your next document.");
+    } catch {
+      announce("Clipboard access was blocked. Use Download Markdown to save a copy instead.");
+    }
+  }
+
+  function download(contents: string, filename: string, mimeType: string) {
+    let url: string | undefined;
+    try {
+      const blob = new Blob([contents], { type: mimeType });
+      url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      anchor.style.display = "none";
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      announce(`${filename} downloaded.`);
+    } catch {
+      announce(`Could not download ${filename}. Try copying the Markdown instead.`);
+    } finally {
+      if (url) window.setTimeout(() => URL.revokeObjectURL(url!), 1000);
+    }
+  }
+
+  return <div className="export-controls">
+    <div className="actions">
+      <button className="secondary" type="button" onClick={handleCopy}>Copy Markdown</button>
+      <button className="secondary" type="button" onClick={() => download(formatPlanMarkdown(plan, metadata), `${stem}-plan.md`, "text/markdown;charset=utf-8")}>Download Markdown</button>
+      <button className="secondary" type="button" onClick={() => download(formatPlanCsv(plan, metadata), `${stem}-content-calendar.csv`, "text/csv;charset=utf-8")}>Download calendar CSV</button>
     </div>
-  );
+    <p className="export-feedback" aria-live="polite" role="status">{feedback}</p>
+  </div>;
 }

@@ -1,4 +1,7 @@
 # Architectural & Structural Weakness Audit
+
+> Historical audit, superseded for current status by the 2026-10-23 upgrade and [verification record](testing-checklist.md). The synchronous pipeline, unauthenticated callbacks, missing polling, absent basic export, and broken Compose details below describe an earlier implementation. They must not be treated as current findings without revalidation. Current boundaries remain local/single-operator access, unverified live-provider delivery, and best-effort optional notifications. See [architecture](architecture.md) and [safety](ai-safety-and-limitations.md).
+
 **Project:** Campaign Brief Studio  
 **Audit Context:** Portfolio Showcase & Realistic Business Problem Simulation  
 **Date:** September 2026  

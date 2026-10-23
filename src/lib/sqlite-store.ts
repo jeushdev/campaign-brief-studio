@@ -146,9 +146,9 @@ CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
       return getBrief(id)!;
     }).immediate();
   }
-  function failAttempt(id: string, attemptId: string, detail: string, _mode?: unknown) {
+  function failAttempt(id: string, attemptId: string, detail: string) {
     return connection.transaction(() => {
-      currentAttempt(id, attemptId, true);
+      currentAttempt(id, attemptId);
       if (connection.prepare("UPDATE attempts SET status='Failed',error=? WHERE id=? AND status='Generating'").run(detail, attemptId).changes !== 1) throw new ConflictError("Attempt changed.");
       if (connection.prepare("UPDATE briefs SET status='Failed',updated_at=?,version=version+1 WHERE id=? AND status='Generating' AND current_attempt_id=?").run(now(), id, attemptId).changes !== 1) throw new ConflictError("Generation changed.");
       activity(id, "Generation failed", detail);

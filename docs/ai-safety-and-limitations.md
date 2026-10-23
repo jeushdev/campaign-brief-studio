@@ -1,6 +1,15 @@
 # Safety and limitations
-Plans are drafts, not evidence of research, compliance or business performance. Review claims and targeting before external use. Provider refusal, incomplete output and invalid plans fail generation. Low-confidence approval requires an acknowledgment and note.
-The app is an unauthenticated local MVP. Reviewer identity is not asserted. Do not expose the loopback server through a public tunnel or proxy.
-SQLite requires persistent local disk. Automatic legacy import validates every record and retains the original JSON. Storage failures do not initialize an empty replacement.
-n8n must have Header Auth enabled with the expected secret. The provider credential is separate. Successful/error execution payload storage is disabled in the export; manual n8n executions may still retain data. Submit only suitable data and check your n8n retention settings.
-Local fixtures do not establish live n8n/provider success. Claude is not implemented.
+
+Plans are drafts, not evidence of research, compliance or business performance. Review claims and targeting before external use. Provider refusal, incomplete output and invalid plans fail generation. Low-confidence approval requires an acknowledgment and note. Brief and revision text are untrusted task data; structured output improves shape consistency without proving factual accuracy or preventing every prompt-injection attempt.
+
+The operator app remains an unauthenticated local tool. Reviewer identity is not asserted. Do not expose its SQLite operator routes through a public tunnel or proxy. Host and same-origin mutation checks remain active even when DEMO_MODE is set. The portfolio demonstration uses labeled fictional fixtures and isolated per-tab client state; it does not grant access to operator storage, paid providers or notifications.
+
+SQLite requires persistent local disk. Automatic legacy import validates every record and retains the original JSON. Storage failures do not initialize an empty replacement. JSON requests are capped at 256 KiB. This is a payload bound, not a comprehensive resource-abuse defense for shared hosting.
+
+n8n must use Header Auth for incoming dispatch and a separate callback Header Auth credential. Webhook mode fails closed when the app callback secret is absent or reused as the dispatch secret. Use a unique random callback secret of at least 32 characters, store credentials securely and rotate the matching app/n8n values together. The callback URL is pinned in n8n configuration and restricted to the existing local app path; redirects are disabled so callback credentials cannot follow an attacker-selected location. Callback envelopes are fully validated before mutation. Stale/duplicate/expired results cannot replace a current plan, and unexpected store failures return retryable 500 responses and are logged.
+
+Only Groq is implemented. Its API credential belongs in a separate n8n Header Auth credential (`Authorization: Bearer <Groq API key>`). The model identifier's openai/ prefix does not mean the app calls the OpenAI API. Provider availability, retention, pricing and free quotas depend on the provider/account. No real provider calls are necessary for the deterministic demonstration or automated suite.
+
+Successful/error execution payload storage is disabled in the exported workflow; manual executions and n8n infrastructure logs may still retain data. Submit only suitable data and check n8n/provider retention settings. Callback delivery retries are bounded and not a durable guarantee. Inspect failed n8n executions/logs; absent results become retryable after attempt expiry. Approval notification is also best effort, after the local review transaction, with no durable outbox or delivery receipt. Local approval does not prove notification delivery and never publishes a campaign automatically.
+
+Configured values establish setup, not tested health. Local fixtures, VM-executed workflow code and simulated production smoke do not establish live n8n/Groq success. Live credentials, network delivery and manual acceptance remain separate evidence gates. OpenAI and Claude adapters are not implemented.

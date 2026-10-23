@@ -1,2 +1,16 @@
-import { AppShell } from "@/components/app-shell"; import { BriefForm } from "@/components/brief-form";
-export default function NewBrief() { return <AppShell><header className="page-header compact"><div><p className="eyebrow">New campaign brief</p><h1>Give the workflow a usable brief.</h1><p>Required fields are normalized and checked before any automation runs.</p></div></header><BriefForm /></AppShell>; }
+import { AppShell } from "@/components/app-shell";
+import { BriefForm } from "@/components/brief-form";
+
+export default function NewBrief() {
+  return (
+    <AppShell>
+      <header className="page-header compact">
+        <div>
+          <h1>Start with a clear brief.</h1>
+          <p>Share the context, audience, and guardrails. We’ll shape them into a campaign draft for your review.</p>
+        </div>
+      </header>
+      <BriefForm />
+    </AppShell>
+  );
+}
