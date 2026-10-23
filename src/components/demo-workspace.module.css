@@ -75,9 +75,12 @@
 .examplePicker,
 .briefSection,
 .document {
-  border: 1px solid var(--line, #e6e6e9);
-  border-radius: 12px;
-  background: var(--paper, #fff);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 
 .draft {
@@ -115,10 +118,10 @@
 .field textarea,
 .decisionForm textarea {
   width: 100%;
-  border: 1px solid #c9cbd1;
-  border-radius: 8px;
+  border: 1px solid rgba(104, 130, 166, .32);
+  border-radius: 10px;
   padding: 10px 11px;
-  background: #fff;
+  background: var(--control-bg);
   color: var(--ink, #24262b);
   font: inherit;
 }

@@ -10,7 +10,7 @@ Campaign Brief Studio explores that workflow in a local software project. It is 
 
 Keep the full journey visible: brief → generation → review → revision → approval → export. Generated content is an intermediate draft. The operator's judgment is the final step before external use.
 
-The redesign replaces a dense prototype shell with a calm document workspace. A lighter navigation rail establishes location; grouped form sections make the input manageable; a full-width plan and anchored sections support reading. Brief context is available in a disclosure, preserving space for the strategy. Review actions are deliberate, and previous versions remain inspectable.
+The redesign replaces a dense prototype shell with a calm document workspace. Following the user's material direction, a floating glass navigation rail establishes location; grouped frosted form sections make the input manageable; a full-width plan and anchored sections support reading. Crisp navy text and more opaque fields preserve legibility. Brief context is available in a disclosure, preserving space for the strategy. Review actions are deliberate, and previous versions remain inspectable. An appearance switch offers glass or solid surfaces and initially respects reduced-transparency preferences.
 
 ![Fictional campaign demonstration in the document workspace](screenshots/demo-desktop.jpg)
 

@@ -20,6 +20,8 @@ Seed `01d1058d` assigned candidate 6. This direction also follows the user's App
 
 ## WORLD
 
+Update 2026-10-24: the user explicitly replaced the flat material treatment with glassmorphism. The layout and workflow remain document-led. Floating frosted navigation and 16px glass panels use a static ice-blue/pearl backdrop, bright rim highlights, shared soft cast shadows, 20px backdrop blur, crisp navy text, and more opaque fields. Solid fallbacks support unavailable blur and reduced transparency. This request supersedes the flat-surface material description below.
+
 A daylit marketing studio. Cool near-white working surface, white document paper, graphite text, one cobalt action color, thin neutral rules. The interface uses the host's system UI font so it feels native on the user's Windows machine. Navigation remains quiet; text is the primary material. Small geometric SVG icons share a 1.7px stroke. No illustrative stock imagery is needed for this operating tool.
 
 ## STRUCTURE

@@ -1,5 +1,17 @@
 # Verification record
 
+## Glassmorphism follow-up — 2026-10-24
+
+- User explicitly requested replacing the flat material with glassmorphism. Shared surface tokens, floating navigation, frosted form sections, document/library/demo panels, brighter rims, and soft cast shadows now implement that direction.
+- Current production build (including TypeScript), ESLint, and all 29 tests passed. Workflow code was unchanged; the production workflow smoke below is evidence from the preceding milestone, not a new live-provider test.
+- Six routes inspected at 1280px and 390px, plus the brief at the user's 826px width: no observed page-level overflow; one main landmark and h1 per route. Full mobile brief included. Captures are in ignored `.impeccable/review/glass-*`; selected current images replace `docs/screenshots/`.
+- Browser initially reported reduced transparency, and the solid fallback appeared. After explicitly enabling Glass effects through the UI, computed surface styles showed `blur(20px) saturate(1.35)` and the intended translucent gradient. Turning it off removed blur; keyboard activation restored it; reload retained the explicit choice. The preview is left with glass enabled.
+- Independent Sol visual review inspected all 12 route captures, the full mobile brief, and the 826px brief. Disposition: “Ship the local glassmorphism implementation.” No material corrections requested. This is visual review, not user acceptance or quantitative contrast/performance certification.
+- The detector was run once for changed targets. It emitted advisory color/type-scale documentation findings across the existing stylesheet family, including new background stops. It is not a clean detector result; the visual reviewer found no material presentation issue in this scope.
+- Automatic approval review rejected a command to restart against the existing temporary preview database. The standard `npm run preview` launcher succeeded instead, creating fresh fictional records and retaining the previous database. No operator data was used.
+
+The earlier milestone's evidence and remaining manual/external limits follow.
+
 Release scope: premium local workspace and fictional demonstration, 2026-10-23. No production deployment, real provider call, real customer data, or external notification is part of this run.
 
 ## Automated acceptance

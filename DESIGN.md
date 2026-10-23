@@ -1,14 +1,19 @@
 ---
 name: Campaign Brief Studio
-description: A calm document workspace for shaping and reviewing campaign plans.
+description: A frosted glass workspace for shaping and reviewing campaign plans.
 colors:
   primary: "#3159d8"
   primary-hover: "#2548b8"
-  graphite: "#24262b"
-  muted-text: "#686b73"
-  divider: "#e6e6e9"
-  document-paper: "#ffffff"
-  workspace-cool: "#f7f7f9"
+  graphite: "#22324a"
+  muted-text: "#53647c"
+  divider: "rgba(65, 89, 125, .15)"
+  document-paper: "rgba(255, 255, 255, .88)"
+  workspace-cool: "#e5edf7"
+  glass-edge: "rgba(255, 255, 255, .86)"
+  canvas-ice: "#cbdff4"
+  canvas-mist: "#e6eef8"
+  canvas-pearl: "#f0eef4"
+  canvas-blue: "#d5e4f1"
   danger: "#ab313b"
 typography:
   display:
@@ -54,8 +59,8 @@ typography:
     lineHeight: 1.5
     letterSpacing: "normal"
 rounded:
-  sm: "8px"
-  md: "12px"
+  sm: "10px"
+  md: "16px"
 spacing:
   xs: "8px"
   sm: "12px"
@@ -86,8 +91,7 @@ components:
     rounded: "{rounded.sm}"
     padding: "10px 12px"
   nav-current:
-    backgroundColor: "#edf0fc"
-    textColor: "#3153b7"
+    textColor: "#2e51af"
     typography: "{typography.navigation}"
     rounded: "7px"
     padding: "11px 13px"
@@ -98,7 +102,6 @@ components:
     rounded: "5px"
     padding: "4px 9px"
   campaign-document:
-    backgroundColor: "{colors.document-paper}"
     textColor: "{colors.graphite}"
     rounded: "{rounded.md}"
 ---
@@ -107,16 +110,16 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Daylit Document Studio"**
+**Creative North Star: "The Frosted Studio"**
 
-Campaign Brief Studio is a quiet working surface for moving a business brief into a considered campaign plan. The cool, near-white workspace gives the white document a clear reading edge; graphite text and fine neutral rules keep attention on the strategy. The host system font makes the interface feel at home on the operator's Windows machine, while a single cobalt family marks actions and active wayfinding.
+Campaign Brief Studio uses the glassmorphism explicitly requested by the user on 2026-10-24. A static ice-blue and pearl background sits beneath frosted surfaces. Bright rim highlights, restrained diffusion, and soft cast shadows make the navigation and document feel suspended above the workspace. Navy text and more opaque fields keep the work readable. The host system font and cobalt actions preserve the native character.
 
 The campaign document is the visual center. Navigation stays compact, source context can be disclosed when needed, and review decisions sit beside the work they affect. Small geometric icons and restrained motion support orientation without competing with copy. Fictional examples and simulated behavior remain visibly identified.
 
 **Key Characteristics:**
-- Cool, daylit neutrals with a white document surface
+- Frosted panels over an ice-blue and pearl canvas
 - Document-led hierarchy and calm navigation
-- Cobalt actions, thin rules, and precise state feedback
+- Cobalt actions, light-catching edges, and precise state feedback
 - System UI typography and small geometric icons
 
 ## Colors
@@ -154,7 +157,7 @@ The palette uses one cobalt action family within a neutral workspace; semantic s
 
 ## Layout
 
-The wide workspace pairs a quiet, sticky side rail with a flexible reading area. The rail is 224px; the main content is centered within a 1360px maximum and keeps generous outer padding. Within a campaign, the document receives the largest reading area and contextual brief details remain collapsible. Section anchors preserve direct navigation through long plans.
+The wide workspace pairs a floating 224px sticky navigation rail with a flexible reading area, separated by a 16px gap and 16px canvas inset. Main content is centered within a 1360px maximum. Brief sections are individual frosted surfaces within a 940px maximum form width. Within a campaign, the document receives the largest reading area and contextual brief details remain collapsible. Section anchors preserve direct navigation through long plans.
 
 At 1200px, outer spacing and multi-column content tighten. At 960px, the rail becomes a top surface with horizontal navigation and the workspace top bar drops away. At 640px, navigation compacts, headers stack, fields become single-column, and tabular campaign and content-day data reflow into readable rows. The brief form also switches its section and field grids at 720px and 520px. Keep controls and document text within the viewport; do not introduce a fixed side panel that competes with the campaign canvas.
 
@@ -162,19 +165,21 @@ The spacing rhythm is built from compact control gaps through broad document sec
 
 ## Elevation & Depth
 
-The system is flat by default and does not use box shadows. Depth comes from the contrast between the cool workspace and white document surfaces, fine borders, and subtle state fills. A short page-settling animation and restrained button transitions provide feedback; they are removed when reduced motion is requested.
+Glass surfaces share `--glass-bg`, `--glass-border`, `--glass-shadow`, and `--glass-filter` from the global stylesheet. The material blends white at 83% to 53% opacity with 20px backdrop blur and 135% saturation. A soft downward cast shadow and inset top highlight establish depth. Fields use 88% white and a darker boundary. Blur belongs on outer surfaces, not on every nested control or text section. The canvas is static; there is no animated blur.
 
-**The Surface Contrast Rule.** Use tonal contrast and a fine border to separate a working surface; do not add a shadow layer to cards or panels.
+**The Glass Legibility Rule.** Keep text crisp and controls opaque enough to read. Unsupported blur and reduced-transparency preferences use solid pale surfaces. Retain visible keyboard focus and reduced-motion support.
+
+The Glass effects toggle provides an explicit per-browser override. It defaults to the system preference, saves an explicit on/off choice in local storage when available, and still works on the current page if storage is denied. Unsupported backdrop filters always retain the solid fallback. The switch has a stable accessible name and a pressed state; on phones its visible label compacts to an icon.
 
 ## Shapes
 
-Controls use gently rounded corners, while document and card containers use a slightly broader radius. Small navigation items and status labels use tighter corners. Forms keep a clear border at rest, strengthen it on hover or focus, and use a visible outline for keyboard focus. Status chips remain compact and pair their fill with a written state.
+Controls use 10px corners, document and panel surfaces use 16px, and the desktop navigation rail uses 20px. Small navigation items and status labels retain tighter corners. Forms keep a clear border at rest, strengthen it on hover or focus, and use a visible outline for keyboard focus. Status chips remain compact and pair their fill with a written state.
 
 ## Components
 
 ### Buttons
 - **Character:** Direct, compact actions with clear hierarchy.
-- **Primary:** Cobalt fill, white text, compact horizontal padding, and an 8px corner. Hover deepens the cobalt; press feedback shifts down by one pixel. Disabled controls lower opacity and use a not-allowed cursor.
+- **Primary:** A subtle cobalt gradient, white text, inset highlight, compact horizontal padding, and a 10px corner. Hover deepens the cobalt; press feedback shifts down by one pixel. Disabled controls lower opacity and use a not-allowed cursor.
 - **Secondary:** White fill, graphite text, and a light neutral border; hover adds a pale gray fill and strengthens the border.
 - **Tertiary:** Transparent at rest with muted text; hover adds a restrained neutral fill.
 - **Focus:** A visible blue outline with an offset. Preserve it for keyboard use.
@@ -184,22 +189,22 @@ Controls use gently rounded corners, while document and card containers use a sl
 - **State:** Needs review, approved, failed, rejected, revision requested, and generating states have distinct fills and text colors. Keep the written status as the primary label and never rely on color alone.
 
 ### Cards / Containers
-- **Character:** White, bordered surfaces that keep the campaign readable against the cool workspace.
-- **Background and border:** White paper with a thin neutral rule. The campaign document uses a 12px corner; common panels and library surfaces share this family.
+- **Character:** Frosted surfaces that keep the campaign readable against the cool workspace.
+- **Background and border:** Translucent white with a bright rim. The campaign document, form sections, common panels, and library share the 16px corner and glass material.
 - **Internal padding:** Panels use a broad inset on desktop and reduce it on smaller screens. Campaign document sections are separated by rules rather than nested shadow cards.
-- **Shadow:** None; see Elevation & Depth.
+- **Shadow:** Shared soft cast shadow and inset highlight; see Elevation & Depth.
 
 ### Inputs / Fields
-- **Style:** Global fields use white fill, a neutral stroke, graphite text, and softly rounded corners, with a 42px minimum height. The new-brief form locally uses 14px text and a 44px minimum height. Labels and helper text stay visually adjacent to their fields.
+- **Style:** Global fields use 88% white fill, a visible blue-gray stroke, navy text, and 10px corners, with a 42px minimum height. The new-brief form locally uses 14px text and a 44px minimum height. Labels and helper text stay visually adjacent to their fields.
 - **Focus:** A visible outline and accent-colored border identify the active control.
 - **Error / Disabled:** Invalid fields use a red border and a linked error message; read-only fields use a muted fill and text. Preserve associated labels and helper copy.
 
 ### Navigation
-- **Style:** Quiet links with small geometric line icons and compact labels. The current route receives a pale cobalt tint and darker cobalt text.
+- **Style:** Quiet links within a floating frosted rail. The current route receives a white-to-ice highlight, darker cobalt text, and subtle elevation.
 - **Responsive behavior:** The side rail becomes a horizontal top navigation at tablet width, then the links compact vertically within their top-surface tabs on narrow screens. Keep the active state visible and preserve the skip-to-content link.
 
 ### Campaign Document
-The signature component is a white, bordered reading surface. A compact row of section anchors sits above the plan; business, objective, status, revision, and generation context precede the strategy. Each major section has generous vertical space and a fine top rule. Content days become stacked rows on small screens, with their labels kept beside the day number.
+The signature component is a frosted reading surface with crisp navy text. A compact row of section anchors sits above the plan; business, objective, status, revision, and generation context precede the strategy. Each major section has generous vertical space and a fine top rule. Content days become stacked rows on small screens, with their labels kept beside the day number.
 
 ### Brief Context
 The source brief is a native disclosure above the campaign document, rather than a competing permanent column. Its open state reveals labeled values in a responsive grid; on mobile that grid becomes a single column.
@@ -219,4 +224,4 @@ The source brief is a native disclosure above the campaign document, rather than
 - **Don't** use color as the only way to indicate status, confidence, or validation.
 - **Don't** add a fixed inspector that takes the campaign document's reading space.
 - **Don't** imply that generated audience insights are verified research or that simulated work is live.
-- **Don't** introduce shadows to cards or panels.
+- **Don't** add blur to nested controls, animate backdrop filters, or lower text opacity to imitate glass.

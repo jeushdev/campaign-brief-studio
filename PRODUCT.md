@@ -28,7 +28,7 @@ Five operator routes: dashboard, new brief, campaign detail, review queue, workf
 
 ## Brand Commitments
 
-Keep the name Campaign Brief Studio. The user requested a clean, professional, premium, Apple-inspired design and delegated completion and design decisions on 2026-10-23. Interpret this as restrained hierarchy, legibility, precise interaction, and calm surfaces. Do not add commercial claims or implied customers.
+Keep the name Campaign Brief Studio. The user requested a clean, professional, premium, Apple-inspired design and delegated completion and design decisions on 2026-10-23. On 2026-10-24, the user explicitly replaced the flat material treatment with glassmorphism. Use frosted surfaces, floating navigation, light-catching edges, and soft depth while keeping text and fields crisp. Respect reduced transparency by default and offer an explicit Glass effects choice. Do not add commercial claims or implied customers.
 
 ## Evidence on Hand
 

@@ -20,7 +20,9 @@ npm run preview
 
 Open the [interactive demo](http://127.0.0.1:3100/demo) or [campaign workspace](http://127.0.0.1:3100). Preview mode creates a separate temporary database with explicitly fictional campaigns and disables generation webhooks and approval notifications. It never uses the operator database. Each preview run creates a new temporary workspace.
 
-The `/demo` route itself keeps all interactions in client memory: examples, new briefs, deterministic generation, review, revisions, rejection, and approved export. Leaving or resetting the page discards its state. It does not call the operator API, read SQLite, or contact a provider.
+The `/demo` route itself keeps campaign interactions in client memory: examples, new briefs, deterministic generation, review, revisions, rejection, and approved export. Leaving or resetting the page discards campaign state. It does not call the operator API, read SQLite, or contact a provider.
+
+The glass interface uses frosted surfaces, floating navigation, and crisp fields over a cool static backdrop. **Glass effects** in the navigation switches between glass and solid surfaces. The initial appearance respects the browser's reduced-transparency preference; an explicit choice is saved locally in this browser when storage is available. This stores only the appearance preference, separately from demonstration content.
 
 For development, copy the template only if `.env.local` does not already exist:
 
