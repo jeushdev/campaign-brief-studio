@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T22:24:58.014189+00:00",
+  "generatedAt": "2026-10-23T22:56:28.311505+00:00",
   "title": "Design System: Campaign Brief Studio",
   "extensions": {
     "colorMeta": {
@@ -233,6 +233,13 @@
       "description": "Frosted reading surface with crisp text and shared glass material.",
       "html": "<article class=\"ds-document\"><header><p>Forma Studio</p><h2>Make space for better work</h2><p>Campaign objective and plan status</p></header><div class=\"ds-plan\"><section><h3>Campaign strategy</h3><p>Keep the message clear, useful, and grounded in the provided brief.</p></section></div></article>",
       "css": ".ds-document{min-width:0;border:1px solid var(--glass-border);border-radius:16px;background:var(--glass-bg);box-shadow:var(--glass-shadow);-webkit-backdrop-filter:var(--glass-filter);backdrop-filter:var(--glass-filter);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-document header{padding:24px 34px;border-bottom:1px solid var(--line)}.ds-plan{padding:0 34px}.ds-document header p:first-child{margin:0 0 5px;color:var(--muted);font-size:13px;font-weight:650}.ds-document h2{margin:0 0 8px;font-size:21px;font-weight:620;line-height:1.35;letter-spacing:-.025em}.ds-document header p:last-child{margin:0;color:var(--muted);font-size:13px}.ds-document section{padding:35px 0;border-top:1px solid var(--line)}.ds-document h3{margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.45}.ds-document section p{max-width:75ch;margin:0;color:#4e5360;font-size:13px;line-height:1.85;overflow-wrap:anywhere}@media(max-width:640px){.ds-document header{padding:18px 21px}.ds-plan{padding:0 21px}.ds-document section{padding:27px 0}}"
+    },
+    {
+      "name": "Guided Brief Progress",
+      "kind": "nav",
+      "description": "The confirmed four-step brief sequence. Only the active step shows its questions; Review precedes generation.",
+      "html": "<nav class=\"ds-progress\" aria-label=\"Brief progress\"><ol><li><button aria-current=\"step\" disabled><span>1</span>Business</button></li><li><button><span>2</span>Campaign</button></li><li><button><span>3</span>Channels</button></li><li><button><span>4</span>Review</button></li></ol></nav>",
+      "css": ".ds-progress{padding:20px 24px;border-bottom:1px solid var(--line);font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-progress ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}.ds-progress button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:42px;padding:6px 8px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-family:inherit;font-size:12px;font-weight:500;line-height:1.5;cursor:pointer}.ds-progress button:hover:not(:disabled){background:rgba(255,255,255,.7);color:var(--ink)}.ds-progress button:focus-visible{outline:3px solid #7290f0;outline-offset:3px}.ds-progress button[aria-current]{background:rgba(234,240,255,.85);color:#2549b2;cursor:default}.ds-progress button span{display:grid;place-items:center;width:25px;height:25px;border:1px solid var(--line);border-radius:50%;font-size:11px}.ds-progress button[aria-current] span{background:var(--accent);border-color:var(--accent);color:#fff}@media(max-width:520px){.ds-progress{padding:14px 10px}.ds-progress ol{gap:2px}.ds-progress button{flex-direction:column;gap:6px;padding:7px 3px;font-size:11px}}"
     }
   ],
   "narrative": {

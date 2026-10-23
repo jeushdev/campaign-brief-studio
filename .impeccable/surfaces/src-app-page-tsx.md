@@ -33,6 +33,8 @@ A daylit marketing studio. Cool near-white working surface, white document paper
 
 ## STRUCTURE
 
+Update 2026-10-24: the user chose a guided Business → Campaign → Channels → Review input flow. New briefs and revisions now use one glass wizard with one reading column, local step validation, Back/Edit controls, preserved answers and progress, and a final editable summary before generation.
+
 The main workspace is a responsive two-part shell. The campaign document occupies the largest reading area. Input context is collapsible above the document, not a competing fixed-width column. Anchored sections preserve browser navigation and allow users to search the full document. On narrow screens navigation becomes a compact top surface, sections stack, and content days become readable rows.
 
 ## FIRST VIEWPORT

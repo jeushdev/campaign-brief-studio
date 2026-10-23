@@ -38,7 +38,7 @@ Development and production builds use Webpack and `.next-studio/`, avoiding stal
 ## The experience
 
 - **Campaigns:** search business, industry, or objective; filter by status; sort and page through results.
-- **New brief:** grouped inputs, suggested/custom channels, meaningful validation, and tab-local recovery of unfinished answers.
+- **New brief and revisions:** Business → Campaign → Channels → Review, with focused questions, Back/Edit controls, suggested/custom channels, step-specific validation, and tab-local recovery of answers and progress. Generation happens only after Review.
 - **Campaign review:** full-width document, section links, original inputs, confidence, explicit decisions, version history, and activity.
 - **Review queue:** separate drafts to review, revisions to continue, and failed or expired attempts to retry.
 - **Workflow:** truthful configuration status, provider details, callback requirements, and setup guidance.

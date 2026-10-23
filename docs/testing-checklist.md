@@ -1,5 +1,17 @@
 # Verification record
 
+## Guided brief follow-up — 2026-10-24
+
+- User identified scattered inputs and explicitly chose Business → Campaign → Channels → Review. New brief and revision share a single-surface, single-column guided form; the standalone fictional demo editor remains separate.
+- Production build including TypeScript, ESLint, and 33 tests passed. Four added tests exercise server-schema error ownership across steps, revision-only instruction validation, and backward-compatible/invalid saved progress.
+- Browser acceptance: empty Business shows only two errors and focuses the alert; its error link focuses the named field. Enter advances to Campaign without creating a record. Reload restores the step and entered answers. Campaign validation shows only its four required errors. Custom channels and optional context survive Back/Edit; Review combines the whole input. Final creation saved all hidden-step values, including source context and a custom channel. Revision instructions validate separately, and edited resubmission produced Revision 2 with the changed offer.
+- Desktop 1280px and mobile 390px captures include every step plus full mobile Review. No mobile page-level overflow was observed. Independent visual review found the sequence coherent and requested no additional material changes beyond the implementing agent's Clear-draft focus correction. A separate correctness review found no material source issue.
+- Original pending payloads are exposed to Review from the existing recovery mechanism; uncertain retries remain locked and bypass new-input validation. Existing lost-response/reload idempotency tests passed. Browser fault injection of a lost response was not performed in this follow-up.
+- Clear draft was confirmed after the correction both from Review and while already on Business: it emptied the values, returned to Business, and focused its heading.
+- Detector ran once on changed form targets: 37 advisory design-system token documentation findings, no non-advisory findings. This does not establish a clean full-app detector result.
+
+Earlier milestone records follow; their broader integration and manual acceptance limits still apply.
+
 ## Glassmorphism follow-up — 2026-10-24
 
 - User explicitly requested replacing the flat material with glassmorphism. Shared surface tokens, floating navigation, frosted form sections, document/library/demo panels, brighter rims, and soft cast shadows now implement that direction.

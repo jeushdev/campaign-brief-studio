@@ -41,6 +41,7 @@ Current source, tests, exported n8n workflow, and documentation. Only fictional 
 - Preserve inputs and decisions through recoverable failures.
 - Make simulated and live behavior distinguishable.
 - Human approval precedes export or external use.
+- Brief entry follows the user-confirmed Business → Campaign → Channels → Review sequence, with focused questions and a final editable summary.
 
 ## Accessibility & Inclusion
 

@@ -6,8 +6,8 @@ export default function NewBrief() {
     <AppShell>
       <header className="page-header compact">
         <div>
-          <h1>Start with a clear brief.</h1>
-          <p>Share the context, audience, and guardrails. We’ll shape them into a campaign draft for your review.</p>
+          <h1>Create a campaign brief.</h1>
+          <p>Four focused steps. Review the details together before generating a draft.</p>
         </div>
       </header>
       <BriefForm />

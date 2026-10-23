@@ -157,7 +157,7 @@ The palette uses one cobalt action family within a neutral workspace; semantic s
 
 ## Layout
 
-The wide workspace pairs a floating 224px sticky navigation rail with a flexible reading area, separated by a 16px gap and 16px canvas inset. Main content is centered within a 1360px maximum. Brief sections are individual frosted surfaces within a 940px maximum form width. Within a campaign, the document receives the largest reading area and contextual brief details remain collapsible. Section anchors preserve direct navigation through long plans.
+The wide workspace pairs a floating 224px sticky navigation rail with a flexible reading area, separated by a 16px gap and 16px canvas inset. Main content is centered within a 1360px maximum. Brief creation and revision use one frosted wizard within an 840px maximum form width. Within a campaign, the document receives the largest reading area and contextual brief details remain collapsible. Section anchors preserve direct navigation through long plans.
 
 At 1200px, outer spacing and multi-column content tighten. At 960px, the rail becomes a top surface with horizontal navigation and the workspace top bar drops away. At 640px, navigation compacts, headers stack, fields become single-column, and tabular campaign and content-day data reflow into readable rows. The brief form also switches its section and field grids at 720px and 520px. Keep controls and document text within the viewport; do not introduce a fixed side panel that competes with the campaign canvas.
 
@@ -190,7 +190,7 @@ Controls use 10px corners, document and panel surfaces use 16px, and the desktop
 
 ### Cards / Containers
 - **Character:** Frosted surfaces that keep the campaign readable against the cool workspace.
-- **Background and border:** Translucent white with a bright rim. The campaign document, form sections, common panels, and library share the 16px corner and glass material.
+- **Background and border:** Translucent white with a bright rim. The campaign document, brief wizard, common panels, and library share the 16px corner and glass material. Input steps are sections within one surface, not separate floating cards.
 - **Internal padding:** Panels use a broad inset on desktop and reduce it on smaller screens. Campaign document sections are separated by rules rather than nested shadow cards.
 - **Shadow:** Shared soft cast shadow and inset highlight; see Elevation & Depth.
 
@@ -208,6 +208,10 @@ The signature component is a frosted reading surface with crisp navy text. A com
 
 ### Brief Context
 The source brief is a native disclosure above the campaign document, rather than a competing permanent column. Its open state reveals labeled values in a responsive grid; on mobile that grid becomes a single column.
+
+### Guided Brief
+
+Use the confirmed sequence Business → Campaign → Channels → Review. Progress navigation stays in one row, compacting labels and numbers on phones. Each input step uses one reading column with labels above controls. The active step heading is 22px, reducing to 21px on phones. Back preserves answers, forward navigation checks prerequisites, and Review displays grouped summaries with contextual Edit controls. Only the final action generates a draft. Optional source context is disclosed within Channels. Creation and revision use the same component; original pending submissions remain authoritative during retries.
 
 ## Do's and Don'ts
 

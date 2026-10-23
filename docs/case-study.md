@@ -23,7 +23,7 @@ The mobile view keeps the same document hierarchy and makes the brief available 
 | Before | After |
 | --- | --- |
 | Fixed context column compressed the campaign near tablet widths | Full-width document, collapsible inputs, and content-driven reflow |
-| Undifferentiated form and technical validation messages | Grouped fields, suggested/custom channels, meaningful errors, focused recovery |
+| Scattered input sections and technical validation messages | A focused Business → Campaign → Channels → Review flow with editable summaries, saved progress, and step-specific recovery |
 | Campaign table without discovery tools | Search, status filters, sorting, pagination, and distinct empty states |
 | One long output followed by decisions | Section navigation and an explicit review action area with confirmation |
 | Clipboard-only action labeled export | Actual Markdown/CSV downloads, copy feedback, metadata, and spreadsheet-formula protection |

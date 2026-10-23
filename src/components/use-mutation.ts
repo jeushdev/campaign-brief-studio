@@ -7,12 +7,14 @@ export function useMutation(url: string) {
   const running = useRef(false);
   const [busy, setBusy] = useState(false), [uncertain, setUncertain] = useState(false), [error, setError] = useState("");
   const [ready, setReady] = useState(false);
+  const [pendingRequest, setPendingRequest] = useState<PendingRequest>();
   useEffect(() => {
     let recovered: PendingRequest | undefined;
     try { recovered = readPendingRequest(window.sessionStorage, url); } catch {}
     pending.current = recovered ?? null;
     startTransition(() => {
       setUncertain(!!recovered);
+      setPendingRequest(recovered);
       setError(recovered ? "An unfinished request was recovered in this tab. Retry the same submission to check its saved result without creating a duplicate." : "");
       setReady(true);
     });
@@ -28,13 +30,15 @@ export function useMutation(url: string) {
     try {
       const result = await sendMutation(url, pending.current.payload, pending.current.key);
       pending.current = null; setUncertain(false);
+      setPendingRequest(undefined);
       try { clearPendingRequest(window.sessionStorage, url); } catch {}
       if (!result.ok) setError(result.error ?? "Request failed. Check the fields or refresh the brief.");
       return result;
     } catch {
+      setPendingRequest(pending.current ?? undefined);
       setUncertain(true);
       setError("The result is uncertain. Retry the same submission to recover it without creating duplicates.");
     } finally { running.current = false; setBusy(false); }
   }
-  return { submit, busy, uncertain, error };
+  return { submit, busy, uncertain, error, pendingRequest };
 }
