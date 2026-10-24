@@ -37,17 +37,22 @@ A focused multi-step questionnaire (`Business → Campaign → Channels → Revi
 
 ![Guided Brief Wizard](docs/screenshots/brief-desktop.jpg)
 
-### 2. Campaign Workspace & Strategy Document
-Deep-dive into the generated campaign blueprint with anchored navigation, risk assumptions, and explicit decision controls.
+### 2. Campaign Strategy & Messaging Angles
+Deep-dive into the generated campaign blueprint: audience insights, three distinct positioning angles, and conversion-focused landing page wireframes.
 
-![Campaign Detail Workspace](docs/screenshots/campaign-detail-desktop.jpg)
+![Campaign Strategy & Messaging Angles](docs/screenshots/campaign-strategy-desktop.jpg)
 
-### 3. Campaign Hub & Lifecycle Queue
+### 3. 7-Day Multi-Channel Calendar & Audit Trail
+Actionable day-by-day scheduling across social, email, and content channels — backed by working assumptions, risk watch points, and full revision history.
+
+![7-Day Content Schedule & Considerations](docs/screenshots/campaign-calendar-desktop.jpg)
+
+### 4. Campaign Hub & Lifecycle Queue
 Search, filter by status (`Draft`, `Needs review`, `Generating`, `Approved`, `Rejected`), and inspect historical revisions.
 
 ![Campaigns Directory](docs/screenshots/campaigns-desktop.jpg)
 
-### 4. Apple-Inspired Glassmorphism on Any Device
+### 5. Apple-Inspired Glassmorphism on Any Device
 Engineered with frosted glass surfaces, light-catching borders, and responsive reflow tested down to 320px mobile screens.
 
 | Interactive Demo (Desktop) | Mobile Viewport Experience |
