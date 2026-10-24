@@ -184,7 +184,7 @@ thead, .library-selects select { background: rgba(255, 255, 255, .45); }
 
 @media (min-width: 1600px) { main { padding-left: 60px; padding-right: 60px; } }
 @media (max-width: 1200px) { main { padding: 36px 30px 50px; }.campaign-table th,.campaign-table td { padding-left: 12px; padding-right: 12px; }.campaign-objective { max-width: 180px; }.angle-grid,.review-considerations { grid-template-columns: 1fr; gap: 23px; }.angle-grid article { padding: 0 0 22px; border: 0; border-bottom: 1px solid var(--line); }.angle-grid article:last-child { padding-bottom: 0; border: 0; }.angle-grid blockquote { max-width: 70ch; }.review-considerations section { border-bottom: 1px solid var(--line); padding-bottom: 10px; }.review-considerations section:last-child { border: 0; padding-bottom: 0; } }
-@media (max-width: 960px) {
+@media (max-width: 960px), (max-height: 600px) {
   .shell { display: block; }.sidebar { height: auto; position: static; border-right: 0; border-bottom: 1px solid var(--line); padding: 18px 24px 12px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px; }.brand { margin: 0; padding: 0; font-size: 14px; }.brand-mark { width: 31px; height: 34px; }.brand-subtitle { font-size: 11px; }.sidebar-footer { display: none; }.sidebar nav { order: 3; width: 100%; display: flex; gap: 5px; }.sidebar nav a { flex: 1; justify-content: center; font-size: 12px; padding: 10px 8px; gap: 7px; }.demo-link { margin: 0 0 0 auto; padding: 6px; border: 0; font-size: 11px; }.demo-link svg:last-child { display: none; }main { max-width: 1000px; padding: 32px 26px 48px; }.page-header { margin-bottom: 28px; }.page-header h1 { font-size: 30px; }.campaign-table .campaign-objective { max-width: 200px; }.campaign-table .campaign-date { display: none; }.campaign-table thead th:nth-child(4) { display: none; }.brief-inputs { grid-template-columns: repeat(2,minmax(0,1fr)); }.plan { padding: 0 26px; }.document-nav { padding: 17px 26px; gap: 22px; }.angle-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
@@ -192,7 +192,7 @@ thead, .library-selects select { background: rgba(255, 255, 255, .45); }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }*, *::before, *::after { animation: none !important; transition: none !important; } }
 
-@media (max-width: 960px) {
+@media (max-width: 960px), (max-height: 600px) {
   .shell { padding: 12px; }
   .sidebar { border: 1px solid var(--glass-border); border-radius: 16px; }
   .brand-row { display: flex; align-items: center; gap: 24px; margin: 0; flex: 1; }

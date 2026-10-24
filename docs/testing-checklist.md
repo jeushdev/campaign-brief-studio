@@ -1,5 +1,14 @@
 # Verification record
 
+## Resolution coverage follow-up — 2026-10-24
+
+- Expanded browser checks to small phones, tablets, laptops, full HD, 2560px desktops, and short landscape windows. Found a fixed-height rail defect at 1280x360: Workflow and Try demo extended below the navigation surface.
+- The existing horizontal shell now activates at either 960px wide or 600px high. This keeps navigation in normal page flow for short desktop windows and browser zoom layouts, while retaining the rail for taller desktop windows.
+- Fresh production build (including TypeScript), ESLint, and whitespace check passed. This change only affects CSS; the preceding unit and production-smoke results remain historical, not newly rerun here.
+- Final browser matrix passed 84 main-route checks across 14 measured resolutions: 320x568, 360x640, 375x667, 414x896, 768x1024, 1024x768, 1366x768, 1440x900, 1920x1080, 2560x1440, 844x390, 1280x360, 1280x600, and 1280x602. The requested 601px viewport measured 602px in this browser. There was no page or visible-content horizontal overflow and no navigation extending outside its surface.
+- Approved, Needs review, and Revision requested detail pages passed 15 additional checks at phone, tablet, short-window, desktop, and large-desktop sizes. The Workflow navigation link was clicked successfully at 1280x360. Browser reported no captured warning/error logs.
+- Before/after matrices and representative screenshots are in ignored .impeccable/review/resolutions/. Verification uses browser viewport resizing, not physical-device or Safari acceptance. The fresh fictional preview uses port 3104; the earlier preview is preserved.
+
 ## Home and interface cleanup — 2026-10-24
 
 - Added Home at / with a short capability overview, plan outputs, brief creation, fictional demo, and direct task links. Moved the existing campaign library to /campaigns; updated navigation, detail breadcrumbs, error/not-found recovery, and lifecycle smoke assertions.
