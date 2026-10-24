@@ -1,5 +1,6 @@
 .workspace {
   width: 100%;
+  overflow-wrap: anywhere;
   color: var(--ink, #24262b);
 }
 
@@ -494,7 +495,7 @@
   .briefDisclosure { margin: 0; border: 0; }
   .briefDisclosure summary { padding: 2px 0; }
   .context { gap: 8px; }
-  .confidence { display: none; }
+  .confidence { max-width: 100%; }
 
   .context {
     grid-template-columns: minmax(0, 1fr);

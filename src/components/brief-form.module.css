@@ -1,4 +1,5 @@
 .form {
+  min-width: 0;
   width: min(100%, 840px);
   display: grid;
   gap: 20px;
@@ -115,7 +116,7 @@
 
 .channelList { display: flex; flex-wrap: wrap; gap: 8px; }
 .channelChip {
-  min-height: 36px;
+  min-height: 44px;
   padding: 7px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -182,7 +183,14 @@
   .footer { padding: 20px 26px; }
 }
 
+@media (max-width: 640px) {
+  .field input, .field textarea, .customChannel input { font-size: 16px; }
+}
+
 @media (max-width: 520px) {
+  .headingRow { flex-wrap: wrap; gap: 8px; }
+  .customChannel { flex-wrap: wrap; }
+  .customChannel input { flex-basis: 140px; }
   .progress { padding: 14px 10px; }
   .progress ol { gap: 2px; }
   .progress button { flex-direction: column; gap: 6px; font-size: 11px; padding: 7px 3px; }

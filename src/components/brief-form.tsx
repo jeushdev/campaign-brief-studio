@@ -250,7 +250,7 @@ export function BriefForm({ revision }: { revision?: Revision }) {
     <form className={styles.form} onSubmit={(event) => void submit(event)} noValidate aria-busy={mutation.busy}>
       <div className={styles.draftBar}>
         <div>
-          <p className={styles.draftTitle}>{restoredDraft ? "Welcome back to your brief." : "Your brief, one step at a time."}</p>
+          {restoredDraft && <p className={styles.draftTitle}>Draft restored</p>}
           <p className={styles.draftDetail}>{restoredDraft ? "Your saved answers and place were restored in this tab." : "Answers stay in this tab when storage is available."}</p>
         </div>
         <div className={styles.draftActions}>

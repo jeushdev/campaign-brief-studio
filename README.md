@@ -6,7 +6,7 @@ Capture the audience, offer, and direction. Explore three messaging angles, a la
 
 Built with **Next.js 16, React 19, TypeScript, transactional SQLite, and an importable n8n/Groq workflow**. The interface is designed for marketing work; the current operator application remains a local, single-user tool.
 
-![Campaign workspace with fictional demonstration records](docs/screenshots/campaigns-desktop.jpg)
+![Home with plan outputs and workspace shortcuts](docs/screenshots/home-desktop.jpg)
 
 ## Explore it locally
 
@@ -18,11 +18,11 @@ npm run build
 npm run preview
 ```
 
-Open the [interactive demo](http://127.0.0.1:3100/demo) or [campaign workspace](http://127.0.0.1:3100). Preview mode creates a separate temporary database with explicitly fictional campaigns and disables generation webhooks and approval notifications. It never uses the operator database. Each preview run creates a new temporary workspace.
+Open [Home](http://127.0.0.1:3100), [Campaigns](http://127.0.0.1:3100/campaigns), or the [interactive demo](http://127.0.0.1:3100/demo). Preview mode creates a separate temporary database with explicitly fictional campaigns and disables generation webhooks and approval notifications. It never uses the operator database. Each preview run creates a new temporary workspace.
 
 The `/demo` route itself keeps campaign interactions in client memory: examples, new briefs, deterministic generation, review, revisions, rejection, and approved export. Leaving or resetting the page discards campaign state. It does not call the operator API, read SQLite, or contact a provider.
 
-The glass interface uses frosted surfaces, floating navigation, and crisp fields over a cool static backdrop. **Glass effects** in the navigation switches between glass and solid surfaces. The initial appearance respects the browser's reduced-transparency preference; an explicit choice is saved locally in this browser when storage is available. This stores only the appearance preference, separately from demonstration content.
+Home explains the available outputs and links to brief creation, campaigns, review, and workflow setup. The frosted interface automatically respects reduced transparency; there is no appearance toggle or saved appearance preference.
 
 For development, copy the template only if `.env.local` does not already exist:
 
@@ -37,6 +37,7 @@ Development and production builds use Webpack and `.next-studio/`, avoiding stal
 
 ## The experience
 
+- **Home:** a short introduction to the plan outputs and direct links to each task.
 - **Campaigns:** search business, industry, or objective; filter by status; sort and page through results.
 - **New brief and revisions:** Business → Campaign → Channels → Review, with focused questions, Back/Edit controls, suggested/custom channels, step-specific validation, and tab-local recovery of answers and progress. Generation happens only after Review.
 - **Campaign review:** full-width document, section links, original inputs, confidence, explicit decisions, version history, and activity.

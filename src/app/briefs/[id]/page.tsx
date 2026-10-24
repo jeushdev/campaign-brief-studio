@@ -28,7 +28,7 @@ export default async function BriefDetail({params}: {params:Promise<{id:string}>
   const mode = currentPlan?.mode === "Demo" ? "Deterministic demo" : currentPlan?.mode === "Webhook" ? "Generated through n8n" : currentPlan?.mode === "Legacy" ? "Imported plan" : undefined;
   const reviewing = brief.status === "Needs review" && !!brief.plan;
   return <AppShell>
-    <div className="breadcrumb"><Link href="/">Campaigns</Link><Icon name="chevron" size={12}/><span>Campaign detail</span></div>
+    <div className="breadcrumb"><Link href="/campaigns">Campaigns</Link><Icon name="chevron" size={12}/><span>Campaign detail</span></div>
     <header className="page-header campaign-header"><div><h1>{brief.brief.businessName}</h1><p>{brief.brief.objective}</p></div><div className="actions"><Status value={brief.status}/>{reviewing && <a className="button secondary" href="#review-decision">Review draft<Icon name="arrow" size={15}/></a>}</div></header>
     <div className="campaign-meta"><span><Icon name="document" size={14}/>Revision {revision?.number ?? 1}</span><span>{brief.brief.industry}</span><span>{brief.brief.channels.join(" · ")}</span>{mode && <span>{mode}</span>}</div>
     {brief.reviewNote && <div className="notice"><b>Latest review note</b><p style={{margin:"6px 0 0",whiteSpace:"pre-wrap"}}>{brief.reviewNote}</p></div>}

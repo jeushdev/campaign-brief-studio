@@ -82,7 +82,11 @@ try {
   assert.equal((await callback(callbackEnvelope)).body.disposition, "ignored_stale");
   assert.equal((await callback({ ok: false, contractVersion: 1, briefId: id, attemptId: callbackEnvelope.attemptId, error: { code: "late_error", message: "Late error must not replace success." } })).body.disposition, "ignored_stale");
   assert.deepEqual(store.getBrief(id), beforeCallbacks);
-  assert.match(await html("/"), new RegExp(name));
+  const home = await html("/");
+  assert.match(home, /Turn your brief into a campaign plan/);
+  for (const route of ["/campaigns", "/briefs/new", "/review", "/settings", "/demo"]) assert.ok(home.includes(`href="${route}"`));
+  assert.doesNotMatch(home, /Glass effects/);
+  assert.match(await html("/campaigns"), new RegExp(name));
   assert.match(await html("/review"), new RegExp(id));
   assert.equal((await post("/api/briefs", { ...input, offer: "Changed" }, key)).status, 409);
   const current = () => store.getBrief(id)!;
@@ -94,7 +98,7 @@ try {
   assert.equal(revised.status, 200); assert.equal(current().revisions.length, 2); assert.equal(current().plans.length, 2);
   assert.match(await html("/briefs/" + id), /Revised approved offer/);
   assert.equal((await post("/api/briefs/" + id + "/review", { version: current().version, decision: "Approved", note: "" })).status, 200);
-  assert.match(await html("/"), /Approved/); assert.doesNotMatch(await html("/review"), new RegExp(id));
+  assert.match(await html("/campaigns"), /Approved/); assert.doesNotMatch(await html("/review"), new RegExp(id));
   assert.equal((await post("/api/briefs/" + id + "/retry", { version: current().version })).status, 409);
   failNext = true;
   const failed = await post("/api/briefs", { ...brief, businessName: "Retry fixture" });
@@ -107,7 +111,7 @@ try {
   assert.ok(retries.every((result) => result.status === 200)); assert.equal(calls, beforeRetry + 1);
   assert.equal(store.getBrief(failedId)!.attempts.length, 2);
   assert.equal((await post("/api/briefs/" + failedId + "/review", { version: store.getBrief(failedId)!.version, decision: "Rejected", note: "Not suitable" })).status, 200);
-  assert.match(await html("/"), /Rejected/); assert.doesNotMatch(await html("/review"), new RegExp(failedId));
+  assert.match(await html("/campaigns"), /Rejected/); assert.doesNotMatch(await html("/review"), new RegExp(failedId));
   console.log("PASS production freshness, revision/resubmission, approval/rejection, failure callback/retry, duplicate prevention, strict authenticated callback envelopes, stale results, malformed input, Host/Origin guards and simulated exported-workflow round trip.");
   console.log("No real n8n/Groq request was made.");
 } catch (error) { console.error(logs); throw error; }

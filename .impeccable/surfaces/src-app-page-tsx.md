@@ -2,7 +2,8 @@
 version: 1
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
-related_targets: ["src/app/globals.css","src/components/app-shell.tsx","src/app/briefs/[id]/page.tsx","src/app/review/page.tsx","src/app/settings/page.tsx","src/app/demo/page.tsx"]
+mode: "operate"
+related_targets: ["src/app/campaigns/page.tsx","src/app/globals.css","src/components/app-shell.tsx","src/app/briefs/[id]/page.tsx","src/app/review/page.tsx","src/app/settings/page.tsx","src/app/demo/page.tsx"]
 ---
 
 # Studio workspace direction
@@ -39,7 +40,7 @@ The main workspace is a responsive two-part shell. The campaign document occupie
 
 ## FIRST VIEWPORT
 
-The operator landing opens with 'Your campaigns.', one new-brief action, an honest local-workspace indicator, and a searchable task list. An empty workspace instead presents a short explanation and two real paths: create a brief or explore the fictional demo. The campaign screen names the business, objective, state, revision and generation source before showing the strategy. The demo has an explicit simulation label and an immediately readable fictional campaign.
+Home explains the three plan outputs and offers brief creation and a fictional demo, followed by task links to Campaigns, Review, and Workflow. The searchable campaign library lives at `/campaigns`, with a focused empty state. The shell has no appearance switch, repeated branding bar, or tagline footer. The campaign screen names the business, objective, state, revision and generation source before showing the strategy. The demo has an explicit simulation label and an immediately readable fictional campaign.
 
 ## SIGNATURE
 

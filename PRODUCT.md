@@ -24,11 +24,11 @@ Next.js and TypeScript application with transactional local SQLite persistence. 
 
 ## Capabilities and Constraints
 
-Five operator routes: dashboard, new brief, campaign detail, review queue, workflow settings. Outputs include three messaging angles, a landing outline, seven content days, assumptions, risks, confidence, and review questions. Approval, rejection, and revision requests are distinct. No automatic publishing, user accounts, billing, verified market research, or delivery guarantees.
+Six operator routes: Home, campaigns, new brief, campaign detail, review queue, workflow settings. Outputs include three messaging angles, a landing outline, seven content days, assumptions, risks, confidence, and review questions. Approval, rejection, and revision requests are distinct. No automatic publishing, user accounts, billing, verified market research, or delivery guarantees.
 
 ## Brand Commitments
 
-Keep the name Campaign Brief Studio. The user requested a clean, professional, premium, Apple-inspired design and delegated completion and design decisions on 2026-10-23. On 2026-10-24, the user explicitly replaced the flat material treatment with glassmorphism. Use frosted surfaces, floating navigation, light-catching edges, and soft depth while keeping text and fields crisp. Respect reduced transparency by default and offer an explicit Glass effects choice. Do not add commercial claims or implied customers.
+Keep the name Campaign Brief Studio. The user requested a clean, professional, premium, Apple-inspired design and delegated completion and design decisions on 2026-10-23. On 2026-10-24, the user explicitly replaced the flat material treatment with glassmorphism. Use frosted surfaces, floating navigation, light-catching edges, and soft depth while keeping text and fields crisp. Respect reduced transparency automatically. The 2026-10-24 cleanup removes the Glass effects choice, duplicate chrome, and promotional copy; Home explains capabilities and links to the tasks. Do not add commercial claims or implied customers.
 
 ## Evidence on Hand
 

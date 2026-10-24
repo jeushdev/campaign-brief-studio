@@ -1,5 +1,15 @@
 # Verification record
 
+## Home and interface cleanup — 2026-10-24
+
+- Added Home at / with a short capability overview, plan outputs, brief creation, fictional demo, and direct task links. Moved the existing campaign library to /campaigns; updated navigation, detail breadcrumbs, error/not-found recovery, and lifecycle smoke assertions.
+- Removed the Glass effects control and its appearance-storage code, duplicate branding bar, tagline footer, and promotional callouts. Kept the frosted material and automatic reduced-transparency fallback. Shortened Review, Workflow, demo, and brief chrome while preserving workflow status, simulation labels, review safeguards, and setup instructions.
+- Final production build, standalone TypeScript check, ESLint, all 33 unit tests, workflow contract check, and production smoke passed. The smoke now exercises Home navigation plus campaign freshness at /campaigns through creation, revision, approval, rejection, and retry. It uses an isolated database and simulated local workflow; no real provider or notification was contacted.
+- Browser: final main-route matrix passed 54 checks (six routes at 320, 390, 640, 641, 826, 960, 961, 1024, and 1280px). Each had one h1/main, correct active navigation, and no page or visible-element horizontal overflow. Approved, review, and revision campaign detail states passed another 12 width checks (320, 390, 826, 1280px).
+- All four brief steps fit at 320px. Empty submission focused the validation alert; Fill sample, progression, final creation, return to Campaigns, search, no-match state, and Clear filters worked with fictional preview data. Missing-campaign recovery linked to /campaigns; expanded workflow setup fit at 320px. Skip to content focused main-content. No captured warning/error logs were reported.
+- Captures and matrix JSON are in ignored .impeccable/review/cleanup/. The final Home desktop capture is docs/screenshots/home-desktop.jpg. Design detector: zero anti-patterns and 212 advisory palette/type documentation notes; this is not a claim of zero design-system drift.
+- Local browser verification only. Physical devices, Safari, screen-reader acceptance, live n8n/Groq delivery, and deployment remain unverified.
+
 ## Guided brief follow-up — 2026-10-24
 
 - User identified scattered inputs and explicitly chose Business → Campaign → Channels → Review. New brief and revision share a single-surface, single-column guided form; the standalone fictional demo editor remains separate.

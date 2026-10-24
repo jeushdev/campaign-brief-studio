@@ -157,9 +157,11 @@ The palette uses one cobalt action family within a neutral workspace; semantic s
 
 ## Layout
 
+Home introduces the plan outputs with primary brief creation and a fictional demo, followed by simple task links. Campaigns live at `/campaigns`. Repeated branding bars and tagline footers are removed.
+
 The wide workspace pairs a floating 224px sticky navigation rail with a flexible reading area, separated by a 16px gap and 16px canvas inset. Main content is centered within a 1360px maximum. Brief creation and revision use one frosted wizard within an 840px maximum form width. Within a campaign, the document receives the largest reading area and contextual brief details remain collapsible. Section anchors preserve direct navigation through long plans.
 
-At 1200px, outer spacing and multi-column content tighten. At 960px, the rail becomes a top surface with horizontal navigation and the workspace top bar drops away. At 640px, navigation compacts, headers stack, fields become single-column, and tabular campaign and content-day data reflow into readable rows. The brief form also switches its section and field grids at 720px and 520px. Keep controls and document text within the viewport; do not introduce a fixed side panel that competes with the campaign canvas.
+At 1200px, outer spacing and multi-column content tighten. At 960px, the rail becomes a top surface with horizontal navigation. At 640px, navigation compacts, headers stack, fields become single-column, and tabular campaign and content-day data reflow into readable rows. The brief form also switches its section and field grids at 720px and 520px. Keep controls and document text within the viewport; do not introduce a fixed side panel that competes with the campaign canvas.
 
 The spacing rhythm is built from compact control gaps through broad document section padding. Use the established spacing tokens for repeated gaps and preserve larger page-specific breathing room where the current layout uses it.
 
@@ -169,7 +171,7 @@ Glass surfaces share `--glass-bg`, `--glass-border`, `--glass-shadow`, and `--gl
 
 **The Glass Legibility Rule.** Keep text crisp and controls opaque enough to read. Unsupported blur and reduced-transparency preferences use solid pale surfaces. Retain visible keyboard focus and reduced-motion support.
 
-The Glass effects toggle provides an explicit per-browser override. It defaults to the system preference, saves an explicit on/off choice in local storage when available, and still works on the current page if storage is denied. Unsupported backdrop filters always retain the solid fallback. The switch has a stable accessible name and a pressed state; on phones its visible label compacts to an icon.
+Reduced transparency follows the browser preference automatically; no appearance control or appearance storage is used.
 
 ## Shapes
 

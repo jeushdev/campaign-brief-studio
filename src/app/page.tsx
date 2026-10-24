@@ -1,15 +1,44 @@
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
-import { CampaignList } from "@/components/campaign-list";
-import { Icon } from "@/components/icon";
-import { listBriefs } from "@/lib/store";
-export const dynamic = "force-dynamic";
-export default function Dashboard() {
-  const briefs = listBriefs();
-  const actions = briefs.filter((b) => ["Needs review", "Failed", "Revision requested"].includes(b.status) || b.generationExpired);
-  return <AppShell><header className="page-header"><div><h1>Your campaigns.</h1><p>From the first idea to a plan you can stand behind.</p></div><Link className="button" href="/briefs/new"><Icon name="plus"/>New campaign brief</Link></header>
-    {briefs.length > 0 ? <><div className="workspace-summary"><span><b>{briefs.length}</b> total campaigns</span><Link href="/review"><span className="summary-dot amber"/><b>{actions.length}</b> need attention<Icon name="arrow" size={14}/></Link><span><span className="summary-dot green"/><b>{briefs.filter((b) => b.status === "Approved").length}</b> approved</span></div><CampaignList campaigns={briefs.map((b) => ({id:b.id,businessName:b.brief.businessName,industry:b.brief.industry,objective:b.brief.objective,status:b.status,updatedAt:b.updatedAt}))}/><div className="subtle-callout"><Icon name="spark"/><p>A little inspiration goes a long way.</p><Link href="/demo">Explore an example<Icon name="arrow" size={15}/></Link></div></> : <>
-      <section className="welcome-canvas"><div className="welcome-copy"><span className="large-document"><Icon name="document" size={28}/></span><h2>A clearer campaign<br/>starts here.</h2><p>Bring your audience, offer, and ambition. Shape them into a considered plan, with room for your judgment at every step.</p><div className="actions"><Link className="button" href="/briefs/new">Create your first brief<Icon name="arrow" size={16}/></Link><Link className="text-link" href="/demo">Explore the demo</Link></div><span className="welcome-note">Your workspace is ready when you are.</span></div><div className="workflow-preview" aria-label="How the workflow works"><div className="preview-title"><span>The way forward</span><Icon name="spark" size={18}/></div>{[{icon:"document" as const,title:"Start with a brief",text:"The right questions. A clear direction."},{icon:"spark" as const,title:"Find the possibilities",text:"Three angles and a seven-day plan."},{icon:"review" as const,title:"Make it yours",text:"Review, refine, and approve with care."}].map((step,i) => <div className="workflow-step" key={step.title}><div className="workflow-step-icon"><Icon name={step.icon}/>{i < 2 && <span/>}</div><div><h3>{step.title}</h3><p>{step.text}</p></div></div>)}<div className="preview-footer"><Icon name="shield" size={15}/>Your decision is always the final step.</div></div></section><div className="getting-started"><div><h2>Thoughtful by design.</h2><p>A complete workflow, with a human at the center.</p></div><p>Keep the brief, explore the strategy, request a revision, and export an approved plan. Every decision has a history.</p></div>
-    </>}
+import { Icon, type IconName } from "@/components/icon";
+
+export const metadata = { title: "Home" };
+
+const tools: { href: string; title: string; description: string; icon: IconName }[] = [
+  { href: "/campaigns", title: "Your campaigns", description: "Find saved briefs, drafts, and approved plans.", icon: "campaigns" },
+  { href: "/review", title: "Review queue", description: "Review a draft, continue a revision, or retry an attempt.", icon: "review" },
+  { href: "/settings", title: "Workflow setup", description: "Check how plans are generated and stored.", icon: "settings" },
+];
+
+export default function Home() {
+  return <AppShell>
+    <section className="home-intro" aria-labelledby="home-title">
+      <div className="home-copy">
+        <h1 id="home-title">Turn your brief into a campaign plan.</h1>
+        <p>Describe your business, audience, and offer. Generate a draft, refine it, and export the plan you approve.</p>
+        <div className="actions">
+          <Link className="button" href="/briefs/new">Create a brief<Icon name="arrow" size={16}/></Link>
+          <Link className="button secondary" href="/demo">Try the demo</Link>
+        </div>
+      </div>
+      <div className="home-outputs">
+        <h2>What’s in your plan</h2>
+        <ul>
+          <li><Icon name="check"/><span>Three messaging angles</span></li>
+          <li><Icon name="check"/><span>A landing-page outline</span></li>
+          <li><Icon name="check"/><span>A seven-day content plan</span></li>
+        </ul>
+        <p>Review assumptions and risks before approving. Export as Markdown or a content calendar CSV.</p>
+      </div>
+    </section>
+    <section className="home-tools" aria-labelledby="home-tools-title">
+      <h2 id="home-tools-title">Continue your work</h2>
+      <div>{tools.map((tool) => <Link href={tool.href} className="home-tool" key={tool.href}>
+        <Icon name={tool.icon} size={21}/>
+        <span><strong>{tool.title}</strong><span>{tool.description}</span></span>
+        <Icon name="arrow" size={18}/>
+      </Link>)}</div>
+    </section>
+    <p className="home-note">This is a local workspace. The demo uses fictional examples and template-generated plans.</p>
   </AppShell>;
 }

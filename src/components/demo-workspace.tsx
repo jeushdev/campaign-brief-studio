@@ -20,7 +20,7 @@ const fields: { key: Exclude<keyof CampaignBrief, "channels">; label: string; mu
   { key: "offer", label: "Offer", multiline: true },
   { key: "objective", label: "Campaign objective" },
   { key: "brandVoice", label: "Brand voice" },
-  { key: "constraints", label: "Constraints", multiline: true, help: "Include at least eight characters so the plan has a usable guardrail." },
+  { key: "constraints", label: "Constraints", multiline: true, help: "Use at least eight characters." },
   { key: "sourceMaterial", label: "Source material", multiline: true, help: "Optional context only. This demo does not verify claims." },
 ];
 
@@ -206,8 +206,7 @@ export function DemoWorkspace() {
   return <div className={styles.workspace}>
     <header className={styles.header}>
       <div>
-        <h1>Try the review workflow</h1>
-        <p>Explore a fictional campaign from its original brief through a recorded review decision.</p>
+        <h1>Interactive demo</h1>
       </div>
       <div className={styles.headerActions}>
         <button className="secondary" type="button" onClick={resetExample}>Reset this example</button>
@@ -216,8 +215,8 @@ export function DemoWorkspace() {
     </header>
 
     <div className={`${styles.simulation} notice`} role="note">
-      <strong>Simulated workspace</strong>
-      <span>Fictional examples. Changes stay on this page until you leave or reset.</span>
+      <strong>Fictional demo</strong>
+      <span>Template-generated plans. Changes are lost when you leave or reset.</span>
     </div>
 
     <div className={styles.layout}>
@@ -292,7 +291,7 @@ export function DemoWorkspace() {
           </section>}
 
           <section className={styles.review} aria-labelledby="review-actions-title">
-            <div className={styles.sectionTitle}><div><h3 id="review-actions-title">Human review</h3><p>Choose a decision for this example. Every action is recorded in the local demo history.</p></div></div>
+            <div className={styles.sectionTitle}><div><h3 id="review-actions-title">Human review</h3><p>Approve, request a revision, or reject this draft.</p></div></div>
             {status === "Needs review" && <div className={styles.actionButtons}>
               <button className="secondary" type="button" onClick={() => { setReviewAction("revision"); setDecisionNote(""); setFormMessage(""); }}>Request a revision</button>
               <button className="secondary" type="button" onClick={() => { setReviewAction("reject"); setDecisionNote(""); setFormMessage(""); }}>Reject plan</button>
