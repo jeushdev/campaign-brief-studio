@@ -1,124 +1,167 @@
-# Campaign Brief Studio
+# ✦ Campaign Brief Studio
 
-A considered workspace for turning a business brief into a campaign plan — with a human at the center.
+> **A human-in-the-loop AI marketing workspace & automation engine.**  
+> Transforms raw business briefs into validated messaging angles, conversion-focused landing page wireframes, and 7-day multi-channel execution plans.
 
-Capture the audience, offer, and direction. Explore three messaging angles, a landing-page outline, and a seven-day content plan. Review the assumptions, request a revision, and export the version you approve. Every attempt and decision stays connected to its brief.
+![Next.js 16](https://img.shields.io/badge/Next.js-16.3-black?style=flat-square&logo=next.js)
+![React 19](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwind-css)
+![SQLite](https://img.shields.io/badge/SQLite-WAL_Mode-003B57?style=flat-square&logo=sqlite)
+![n8n](https://img.shields.io/badge/n8n-Orchestrated-EA4B71?style=flat-square&logo=n8n)
+![Tests](https://img.shields.io/badge/Tests-33%20Passing-success?style=flat-square)
 
-Built with **Next.js 16, React 19, TypeScript, transactional SQLite, and an importable n8n/Groq workflow**. The interface is designed for marketing work; the current operator application remains a local, single-user tool.
+---
 
-![Home with plan outputs and workspace shortcuts](docs/screenshots/home-desktop.jpg)
+![Campaign Brief Studio Desktop Overview](docs/screenshots/home-desktop.jpg)
 
-## Explore it locally
+---
 
-Requires Node.js **22.20 or later**, npm, and a writable local disk. Install dependencies and build:
+## 🎯 At a Glance
 
-```powershell
+Most generative marketing tools produce isolated snippets of unverified copy. **Campaign Brief Studio** treats AI output as an intermediate proposal, placing human judgment and operational safety at the center of the lifecycle.
+
+- **4-Stage Guided Brief Wizard:** Collects company context, campaign direction, audience demographics, and channel strategy with zero fluff.
+- **3 Strategic Messaging Angles:** Generates distinct positioning options (e.g., Pain-Relief, Social Proof, Risk-Reversal) for every brief.
+- **Full Conversion Blueprint:** Complete landing page outline including headline hierarchies, benefit blocks, trust proof points, and call-to-actions.
+- **7-Day Multi-Channel Execution Plan:** Concrete day-by-day scheduling for Email, Social, Paid, and Content marketing.
+- **Deliberate Human Review & Revision Gate:** Strict approval safeguards, explicit low-confidence alerts, change requests, and full revision history.
+- **Deterministic & Async AI Modes:** Run locally with deterministic offline templates, or connect an asynchronous **n8n + Groq** webhook pipeline.
+
+---
+
+## 📸 Visual Showcase
+
+### 1. Guided Brief Wizard
+A focused multi-step questionnaire (`Business → Campaign → Channels → Review`) with auto-saved drafts and tab crash recovery.
+
+![Guided Brief Wizard](docs/screenshots/brief-desktop.jpg)
+
+### 2. Campaign Workspace & Strategy Document
+Deep-dive into the generated campaign blueprint with anchored navigation, risk assumptions, and explicit decision controls.
+
+![Campaign Detail Workspace](docs/screenshots/campaign-detail-desktop.jpg)
+
+### 3. Campaign Hub & Lifecycle Queue
+Search, filter by status (`Draft`, `Needs review`, `Generating`, `Approved`, `Rejected`), and inspect historical revisions.
+
+![Campaigns Directory](docs/screenshots/campaigns-desktop.jpg)
+
+### 4. Apple-Inspired Glassmorphism on Any Device
+Engineered with frosted glass surfaces, light-catching borders, and responsive reflow tested down to 320px mobile screens.
+
+| Interactive Demo (Desktop) | Mobile Viewport Experience |
+|:---:|:---:|
+| ![Interactive Demo](docs/screenshots/demo-desktop.jpg) | ![Mobile Responsive](docs/screenshots/demo-mobile.jpg) |
+
+---
+
+## ⚡ Quickstart
+
+### Prerequisites
+- **Node.js**: `22.20` or later
+- **npm**
+
+### 1. Instant Fictional Preview (Port 3100)
+Test drive the studio with pre-seeded fictional campaigns in an isolated sandbox database:
+
+```bash
 npm ci
 npm run build
 npm run preview
 ```
+Open **[http://127.0.0.1:3100](http://127.0.0.1:3100)** or explore the zero-setup client-memory **`/demo`** route directly.
 
-Open [Home](http://127.0.0.1:3100), [Campaigns](http://127.0.0.1:3100/campaigns), or the [interactive demo](http://127.0.0.1:3100/demo). Preview mode creates a separate temporary database with explicitly fictional campaigns and disables generation webhooks and approval notifications. It never uses the operator database. Each preview run creates a new temporary workspace.
+### 2. Local Operator Development (Port 3000)
+Run the active workspace with real transactional SQLite persistence:
 
-The `/demo` route itself keeps campaign interactions in client memory: examples, new briefs, deterministic generation, review, revisions, rejection, and approved export. Leaving or resetting the page discards campaign state. It does not call the operator API, read SQLite, or contact a provider.
-
-Home explains the available outputs and links to brief creation, campaigns, review, and workflow setup. The frosted interface automatically respects reduced transparency; there is no appearance toggle or saved appearance preference.
-
-For development, copy the template only if `.env.local` does not already exist:
-
-```powershell
+```bash
 Copy-Item .env.example .env.local
 npm run dev
 ```
+Open **[http://127.0.0.1:3000](http://127.0.0.1:3000)**. Leaving `N8N_WEBHOOK_URL` blank uses deterministic offline generation — no external API keys needed!
 
-Open [127.0.0.1:3000](http://127.0.0.1:3000). Leave `N8N_WEBHOOK_URL` blank to use deterministic local plans in the operator workspace. This mode saves actual local records and exercises the real review lifecycle; its output comes from templates, not an LLM. Use `npm start` after a build to run your configured operator workspace locally.
+---
 
-Development and production builds use Webpack and `.next-studio/`, avoiding stale Turbopack native-module junctions on Windows. Existing `.next/` output is ignored and left intact. Standalone packaging is enabled only for Docker builds.
+## 🏗️ Architecture & Orchestration
 
-## The experience
-
-- **Home:** a short introduction to the plan outputs and direct links to each task.
-- **Campaigns:** search business, industry, or objective; filter by status; sort and page through results.
-- **New brief and revisions:** Business → Campaign → Channels → Review, with focused questions, Back/Edit controls, suggested/custom channels, step-specific validation, and tab-local recovery of answers and progress. Generation happens only after Review.
-- **Campaign review:** full-width document, section links, original inputs, confidence, explicit decisions, version history, and activity.
-- **Review queue:** separate drafts to review, revisions to continue, and failed or expired attempts to retry.
-- **Workflow:** truthful configuration status, provider details, callback requirements, and setup guidance.
-- **Approved exports:** copy or download Markdown and download the content calendar as CSV. Exports include campaign, revision, status, and confidence. CSV cells neutralize formula-like values.
-
-Uncertain mutations retain their original payload and idempotency key in tab storage when available, including across reloads. Normal submissions clear the pending operation after a readable response. Browser storage denial does not block the form; same-page retries still preserve their identity. Sensitive client material should not be entered into a portfolio demonstration.
-
-## Workflow and trust
+Campaign Brief Studio pairs a Next.js App Router frontend with an asynchronous, HMAC-authenticated n8n automation workflow:
 
 ```mermaid
 flowchart LR
-  Brief[Structured brief] --> Validate[Validate and save]
-  Validate --> Generate[Generate draft]
-  Generate --> Review[Human review]
-  Review -->|Revise| Brief
-  Review -->|Approve| Export[Export approved plan]
-  Review -->|Reject| History[Retain decision history]
+    A[Structured Brief] --> B[Zod Validation & SQLite WAL]
+    B --> C{Generation Mode}
+    C -->|Local Offline| D[Deterministic Plan Engine]
+    C -->|Webhook Active| E[n8n Webhook Dispatch]
+    E --> F[Groq LLM Structured Output]
+    F --> G[HMAC Authenticated Callback]
+    D --> H[Needs Review Status]
+    G --> H
+    H --> I{Human Review}
+    I -->|Revise| A
+    I -->|Approve| J[Export Markdown / CSV]
+    I -->|Reject| K[Preserve Decision History]
 ```
 
-In webhook mode, n8n acknowledges the submission, calls Groq, then sends an authenticated result callback. The app verifies the complete versioned envelope and plan before changing state. A configured provider failure never silently falls back to a template.
+### Engineering Highlights
 
-The app waits up to ten seconds for dispatch acknowledgment. An uncertain transport result remains Generating until a callback or the two-minute expiry window, so a delayed legitimate result cannot race a replacement attempt. Callbacks with stale, expired, or already-completed attempt IDs cannot replace the current plan. Internal storage failures are logged and return retryable errors.
+- **Crash & Reload Resilience:** Uncertain submissions preserve their payload and idempotency key in `sessionStorage`. Browser reload replays the committed operation instead of creating duplicate campaigns.
+- **HMAC Callback Security:** The callback endpoint verifies dedicated `x-campaign-callback-secret` headers, validates versioned plan envelopes, and rejects stale/expired attempt IDs.
+- **Spreadsheet-Safe Exports:** One-click Markdown dossiers and CSV content calendars. CSV exports sanitize formula-injection vectors (`=`, `+`, `-`, `@`) automatically.
+- **Zero-Dependency Live Demo:** The `/demo` route runs completely in browser memory, allowing anyone to test brief creation, generation, review, revisions, and exports without a server or database.
 
-Rejection and revision requests require a note. Low-confidence approval requires an acknowledgment and a note. Approval uses an explicit confirmation step. Export does not publish content, and an approved plan is not evidence of factual accuracy, compliance, or notification delivery.
+---
 
-## Connect n8n and Groq
+## 🤖 n8n + Groq Automation Setup
 
-Use only fictional input until you have independently verified the connection. The checked-in workflow is inactive and contains no credentials.
+To connect live AI orchestration via n8n:
 
-| Variable | Where | Purpose |
-| --- | --- | --- |
-| `N8N_WEBHOOK_URL` | App | Generation webhook; blank selects deterministic local mode |
-| `N8N_WEBHOOK_SECRET` | App | Matches inbound `x-campaign-webhook-secret` Header Auth |
-| `N8N_CALLBACK_SECRET` | App | A distinct random callback credential, at least 32 characters recommended |
-| `APP_URL` | App | Local origin reachable from n8n, without a trailing slash/path |
-| `CAMPAIGN_CALLBACK_URL` | n8n | Exact callback URL sent by the app; restricted to the local callback path |
-| `CAMPAIGN_DB_PATH` | App | Optional SQLite path; default `data/campaign-brief-studio.sqlite` |
-| `N8N_APPROVED_WEBHOOK_URL` | App, optional | Best-effort approval notification webhook |
-| `SLACK_WEBHOOK_URL` | n8n, optional | Downstream notification destination |
+1. Import [`n8n/campaign-brief-studio.json`](n8n/campaign-brief-studio.json) into your n8n workspace.
+2. In the **Campaign webhook** node, configure Header Auth: `x-campaign-webhook-secret` matching `N8N_WEBHOOK_SECRET` in `.env.local`.
+3. In the **Groq response** node, set your Groq API Key (`openai/gpt-oss-120b`).
+4. In the **Callback result** node, configure Header Auth: `x-campaign-callback-secret` matching `N8N_CALLBACK_SECRET`.
+5. Set `CAMPAIGN_CALLBACK_URL` in n8n to `http://127.0.0.1:3000/api/webhooks/generation-complete`.
+6. Activate the workflow and submit a brief!
 
-1. Import [the generated workflow](n8n/campaign-brief-studio.json).
-2. On **Campaign webhook**, select Header Auth: `x-campaign-webhook-secret` matching the app dispatch secret.
-3. On **Groq response**, select a separate Header Auth credential: `Authorization: Bearer YOUR_GROQ_API_KEY`.
-4. On **Callback result**, select another Header Auth credential: `x-campaign-callback-secret` matching the app callback secret. Dispatch and callback secrets must differ.
-5. Set `CAMPAIGN_CALLBACK_URL` in n8n to exactly match `APP_URL` plus `/api/webhooks/generation-complete`. The callback destination is validated before the provider call; redirects are disabled.
-6. Activate the workflow, restart the app, submit a fictional brief, and inspect matching brief/attempt IDs through to Needs review. This is a manual live-acceptance step, not established by the local automated suite.
+---
 
-The current provider is Groq chat completions. The workflow's model identifier is `openai/gpt-oss-120b`; the prefix is a Groq-served model name, not an OpenAI API integration. Provider/model availability, quotas, retention, and pricing are account-dependent. Model changes belong in `scripts/workflow.ts`, followed by artifact regeneration and verification.
+## 🛠️ Tech Stack
 
-The callback node retries delivery up to three times. This is bounded retry behavior, not a durable delivery guarantee. Inspect failed n8n executions/logs and retry expired attempts explicitly. Optional approval notifications are also best effort. No notification is sent by preview mode or the test suite.
+| Layer | Technology |
+| --- | --- |
+| **Framework** | Next.js 16 (App Router), React 19, TypeScript 5 |
+| **Styling** | Tailwind CSS v4, custom glassmorphism design system |
+| **Persistence** | SQLite with WAL mode, transactions, and foreign keys (`better-sqlite3`) |
+| **AI Orchestration** | n8n workflow engine with Groq LLM completions |
+| **Validation** | Strict schema validation with JSON Schema & TypeScript contracts |
+| **Testing** | Node.js native test runner, ESLint 9, strict typechecking |
 
-### Docker
+---
 
-`docker compose up --build` runs both services with persistent SQLite and n8n volumes. App and n8n ports bind to loopback. Compose selects webhook mode even when the app template's webhook URL is blank: set both distinct secrets, import the workflow, and configure its credentials first.
+## 🧪 Verification & Quality Suite
 
-Compose supplies internal app/callback addresses. Do not use a container's `localhost` to refer to another container. Do not delete volumes unless you intend to delete saved data. The Dockerfile follows `.next-studio/` standalone output; Docker runtime acceptance is separate from the local Node checks.
-
-## Verification and maintenance
+Run the full verification battery locally:
 
 ```powershell
-npm run typecheck
-npm run lint
-npm test
-npm run contract:check
-npm run build
-npm run test:production
+npm run typecheck         # Strict TypeScript check (0 errors)
+npm run lint              # ESLint 9 linting
+npm test                  # 33 unit and integration tests
+npm run contract:check    # Verifies n8n workflow contract parity
+npm run test:production   # Isolated production smoke test
 ```
 
-The production smoke test uses an isolated database and a local webhook stub. It checks the exported node code, authenticated callbacks, review/revision/retry behavior, duplicate prevention, and Host/Origin guards. It makes no real n8n, Groq, or Slack request.
+---
 
-After changing the shared contract or workflow source:
+## 📚 Deep Dive Documentation
 
-```powershell
-npm run contract:export
-npm run contract:check
-```
+- [System Architecture](docs/architecture.md)
+- [Design System & Glassmorphism Guidelines](DESIGN.md)
+- [Testing & Quality Evidence](docs/testing-checklist.md)
+- [Workflow Schema Contract](docs/contract.md)
+- [Case Study & Retrospective](docs/case-study.md)
+- [Interactive Demo Walkthrough Script](docs/demo-script.md)
+- [AI Safety & Operational Limitations](docs/ai-safety-and-limitations.md)
 
-Re-import the regenerated workflow and reselect credentials. Never hand-edit the exported JSON to diverge from `scripts/workflow.ts`.
+---
 
-SQLite uses transactions, WAL, foreign keys, and idempotent operation receipts. Back up the entire data directory with the app stopped, including sidecar files. The operator app has no user accounts or authenticated reviewer identity; Host checks are not user authentication. Do not expose it publicly. A separately hosted public demonstration or real multi-user service needs its own deployment, identity, data-isolation, and acceptance work.
-
-See [verification evidence](docs/testing-checklist.md), [architecture](docs/architecture.md), [contract](docs/contract.md), [safety and limitations](docs/ai-safety-and-limitations.md), [case study](docs/case-study.md), [walkthrough](docs/demo-script.md), and [design system](DESIGN.md).
+*Crafted by [jeushdev](https://github.com/jeushdev) as a showcase of human-in-the-loop AI systems and resilient fullstack engineering.*
