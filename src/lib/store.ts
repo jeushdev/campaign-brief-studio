@@ -1,9 +1,13 @@
 import "server-only";
+import os from "node:os";
 import path from "node:path";
 import { openStore } from "./sqlite-store.ts";
 export { ConflictError, NotFoundError } from "./sqlite-store.ts";
 let store: ReturnType<typeof openStore> | undefined;
-const db = () => store ??= openStore(process.env.CAMPAIGN_DB_PATH || path.join(process.cwd(), "data", "campaign-brief-studio.sqlite"));
+const defaultDbPath = process.env.NETLIFY
+  ? path.join(os.tmpdir(), "campaign-brief-studio.sqlite")
+  : path.join(process.cwd(), "data", "campaign-brief-studio.sqlite");
+const db = () => store ??= openStore(process.env.CAMPAIGN_DB_PATH || defaultDbPath);
 export const createAndStart = (...args: Parameters<ReturnType<typeof openStore>["createAndStart"]>) => db().createAndStart(...args);
 export const retryFailed = (...args: Parameters<ReturnType<typeof openStore>["retryFailed"]>) => db().retryFailed(...args);
 export const submitRevision = (...args: Parameters<ReturnType<typeof openStore>["submitRevision"]>) => db().submitRevision(...args);

@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = ".next-studio"
+
+[build.environment]
+  NODE_VERSION = "22.20.0"
+  CAMPAIGN_DB_PATH = "/tmp/campaign-brief-studio.sqlite"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Showcase Mode: Redirect root visitors straight to the Interactive Portfolio Demo
+[[redirects]]
+  from = "/"
+  to = "/demo"
+  status = 302
+  force = true

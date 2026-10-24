@@ -86,6 +86,12 @@ npm run dev
 ```
 Open **[http://127.0.0.1:3000](http://127.0.0.1:3000)**. Leaving `N8N_WEBHOOK_URL` blank uses deterministic offline generation — no external API keys needed!
 
+### 3. Public Portfolio Showcase (Netlify)
+The repository includes a pre-configured [`netlify.toml`](netlify.toml) designed for instant portfolio deployments:
+- Connect your GitHub repository to [Netlify](https://app.netlify.com).
+- Netlify uses the provided `netlify.toml` with `@netlify/plugin-nextjs`.
+- Root traffic automatically routes visitors to the client-side **Interactive Demo (`/demo`)**, enabling reviewers to experience brief authoring, AI positioning generation, human-in-the-loop review gates, and spreadsheet-safe exports with zero backend configuration.
+
 ---
 
 ## 🏗️ Architecture & Orchestration
