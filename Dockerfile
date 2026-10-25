@@ -1,4 +1,4 @@
-FROM node:22.20-bookworm-slim AS dependencies
+FROM node:22.23.4-bookworm-slim AS dependencies
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ ENV CAMPAIGN_STANDALONE=true
 COPY . .
 RUN npm run build
 
-FROM node:22.20-bookworm-slim AS runner
+FROM node:22.23.4-bookworm-slim AS runner
 
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
