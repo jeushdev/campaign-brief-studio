@@ -3,7 +3,7 @@
   publish = ".next-studio"
 
 [build.environment]
-  NODE_VERSION = "22.20.0"
+  NODE_VERSION = "22.23.4"
   CAMPAIGN_DB_PATH = "/tmp/campaign-brief-studio.sqlite"
 
 [[plugins]]
