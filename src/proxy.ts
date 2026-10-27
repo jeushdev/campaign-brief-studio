@@ -18,17 +18,21 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow landing website (root /)
+  if (pathname === "/") {
+    return NextResponse.next();
+  }
+
   // Allow the interactive demo portfolio showcase
   if (pathname === "/demo" || pathname.startsWith("/demo/")) {
     return NextResponse.next();
   }
 
-  // Redirect public visitors to the interactive demo showcase
+  // Redirect public visitors requesting other web pages back to the landing website
   if (request.method === "GET" && !pathname.startsWith("/api/")) {
-    return NextResponse.redirect(new URL("/demo", request.url), 302);
+    return NextResponse.redirect(new URL("/", request.url), 302);
   }
 
   // Shield unauthenticated operator API routes from public access
   return NextResponse.json({ error: "Local MVP: loopback access only." }, { status: 403 });
 }
-

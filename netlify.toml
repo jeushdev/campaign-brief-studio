@@ -8,10 +8,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Showcase Mode: Redirect root visitors straight to the Interactive Portfolio Demo
-[[redirects]]
-  from = "/"
-  to = "/demo"
-  status = 302
-  force = true

@@ -28,29 +28,34 @@ test("client request preserves saved id on HTTP failure and rejects unreadable/n
   await assert.rejects(sendMutation("/api", {}, "stable-key", (async () => new Response("<html>error</html>")) as typeof fetch), /same submission/);
 });
 
-test("proxy router redirects public page traffic to demo while guarding operator API", () => {
+test("proxy router serves landing website and demo publicly while guarding operator API", () => {
+  // Public host accessing root is served the landing website
   const rootReq = new NextRequest("https://spectacular-mochi-1afdfe.netlify.app/");
   const rootRes = proxy(rootReq);
-  assert.equal(rootRes.status, 302);
-  assert.equal(rootRes.headers.get("location"), "https://spectacular-mochi-1afdfe.netlify.app/demo");
+  assert.equal(rootRes.status, 200);
 
+  // Public host accessing /demo is allowed through
   const demoReq = new NextRequest("https://spectacular-mochi-1afdfe.netlify.app/demo");
   const demoRes = proxy(demoReq);
   assert.equal(demoRes.status, 200);
 
+  // Public host accessing static assets is allowed through
   const staticReq = new NextRequest("https://spectacular-mochi-1afdfe.netlify.app/_next/static/chunk.js");
   const staticRes = proxy(staticReq);
   assert.equal(staticRes.status, 200);
 
+  // Public host accessing operator navigation redirects to landing website
   const campaignsReq = new NextRequest("https://spectacular-mochi-1afdfe.netlify.app/campaigns");
   const campaignsRes = proxy(campaignsReq);
   assert.equal(campaignsRes.status, 302);
-  assert.equal(campaignsRes.headers.get("location"), "https://spectacular-mochi-1afdfe.netlify.app/demo");
+  assert.equal(campaignsRes.headers.get("location"), "https://spectacular-mochi-1afdfe.netlify.app/");
 
+  // Public host accessing operator API is blocked with 403
   const apiReq = new NextRequest("https://spectacular-mochi-1afdfe.netlify.app/api/briefs", { method: "POST" });
   const apiRes = proxy(apiReq);
   assert.equal(apiRes.status, 403);
 
+  // Local loopback host is always allowed
   const localReq = new NextRequest("http://127.0.0.1:3000/api/briefs", { headers: { host: "127.0.0.1:3000" } });
   const localRes = proxy(localReq);
   assert.equal(localRes.status, 200);
